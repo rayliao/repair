@@ -1,0 +1,23 @@
+.detail {
+  margin-top: 20px;
+  font-size: 26px;
+}
+
+.images {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.imageArea {
+  margin-right: 20px;
+  margin-bottom: 20px;
+  width: 180px;
+  height: 180px;
+}
+
+.image {
+  display: block;
+  height: 100%;
+  width: 100%;
+}

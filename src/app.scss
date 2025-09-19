@@ -1,0 +1,94 @@
+@import './font.scss';
+@import '~taro-ui/dist/style/components/modal.scss';
+@import "~taro-ui/dist/style/components/action-sheet.scss";
+@import "~taro-ui/dist/style/components/tab-bar.scss";
+@import "~taro-ui/dist/style/components/badge.scss";
+
+html,
+body,
+page {
+	--background: #f2f3f4;
+	--on-background: #333;
+	--on-background-link: #2877e8;
+	--surface: #fff;
+	--on-surface: #333;
+	--on-surface-border: #eee;
+	--on-surface-light: #666;
+	--on-surface-strong: #fc5b32;
+	--on-surface-primary: #25c9f9;
+	--primary: #25c9f9;
+	--on-primary: #fff;
+	color: var(--on-background);
+	background-color: var(--background);
+}
+
+.navigator-hover {
+	opacity: 1;
+	background-color: transparent;
+}
+
+.container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	box-sizing: border-box;
+}
+
+.form-list .form-item {
+	margin-top: 20px;
+	width: 100%;
+	position: relative;
+}
+
+.form-list .form-item:first-child {
+	margin-top: 0;
+}
+
+.form-list .fix-right {
+	position: absolute;
+	right: 16px;
+	top: 20px;
+	font-size: 28px;
+}
+
+.form-list .form-handle {
+	margin-top: 20px;
+	width: 100%;
+}
+
+.form-list .input,
+.form-list .picker {
+	width: 100%;
+	box-sizing: border-box;
+	border: none;
+	height: 80px;
+	font-size: 28px;
+	line-height: 80px;
+	border-radius: 10px;
+	padding: 0 16px;
+	background-color: var(--background);
+}
+
+.form-list .input-placeholder {
+	color: var(--on-surface-light);
+}
+
+.form-list .picker {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.form-list .button {
+	height: 80px;
+	line-height: 80px;
+	font-size: 28px;
+	border-radius: 10px;
+}
+
+.form-list .button-primary {
+	background-color: var(--primary);
+	color: var(--on-primary);
+}

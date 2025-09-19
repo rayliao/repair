@@ -1,0 +1,66 @@
+.comp-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
+  height: 140px;
+  display: flex;
+  background-color: #fff;
+  border-top: 2px solid #eee;
+  justify-content: space-between;
+}
+
+.comp-footer .left {
+  width: 35%;
+  display: flex;
+  align-items: center;
+}
+
+.comp-footer .left .item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
+  color: #666;
+  font-size: 24px;
+  height: 100%;
+}
+
+.comp-footer .left .item .fa {
+  font-size: 32px;
+  margin-bottom: 6px;
+}
+
+.comp-footer .right {
+  width: 65%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.comp-footer .item {
+  width: 48%;
+}
+
+.comp-footer .btn {
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  height: 70px;
+  padding: 0 10px;
+  font-size: 26px;
+  line-height: 70px;
+}
+
+.comp-footer .btn-book {
+  background-image: linear-gradient(to right, #fdc744, #f3a42a);
+}
+
+.comp-footer .btn-ask {
+  background-image: linear-gradient(to right, #f89973, #fc5b32);
+}
