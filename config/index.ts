@@ -1,16 +1,21 @@
 import { defineConfig, type UserConfigExport } from "@tarojs/cli";
-import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import devConfig from "./dev";
 import prodConfig from "./prod";
 const isH5 = process.env.CLIENT_ENV === "h5";
 const HOST = '"https://api.zxjl.com"';
 
 // https://taro-docs.jd.com/docs/next/config#defineconfig-辅助函数
-export default defineConfig<"vite">(async (merge, { command, mode }) => {
+export default defineConfig<"vite">(async (merge) => {
   const baseConfig: UserConfigExport<"vite"> = {
     projectName: "repair",
     date: "2025-9-18",
-    designWidth: 750,
+    // 配置 NutUI 375 尺寸
+    designWidth(input: any) {
+      if (input?.file?.replace(/\\+/g, "/").indexOf("@nutui") > -1) {
+        return 375;
+      }
+      return 750;
+    },
     deviceRatio: {
       640: 2.34 / 2,
       750: 1,
@@ -19,7 +24,8 @@ export default defineConfig<"vite">(async (merge, { command, mode }) => {
     },
     sourceRoot: "src",
     outputRoot: "dist",
-    plugins: [],
+    // 开启 HTML 插件
+    plugins: ["@tarojs/plugin-html"],
     defineConstants: {
       HOST: isH5 ? '"/api"' : HOST,
     },
@@ -29,6 +35,15 @@ export default defineConfig<"vite">(async (merge, { command, mode }) => {
     },
     framework: "react",
     compiler: "vite",
+    // NutUI 相关配置
+    vite: {
+      optimizeDeps: {
+        exclude: ["@nutui/nutui-react-taro", "@nutui/icons-react-taro"],
+      },
+    },
+    cache: {
+      enable: false, // 根据官方建议关闭 cache
+    },
     mini: {
       postcss: {
         pxtransform: {

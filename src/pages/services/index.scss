@@ -1,0 +1,62 @@
+.services {
+  padding: 20px;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+
+  &-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  &-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  &-content {
+    .service-category {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      .category-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #25c9f9;
+        margin-bottom: 15px;
+      }
+
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+
+        .service-item {
+          background: #f5f5f5;
+          border-radius: 8px;
+          padding: 20px;
+          text-align: center;
+          border: 1px solid #e0e0e0;
+
+          &:hover {
+            background: #25c9f9;
+            color: white;
+          }
+
+          .service-name {
+            font-size: 16px;
+            color: #666;
+          }
+        }
+      }
+    }
+
+    .quick-action {
+      margin-top: 40px;
+      text-align: center;
+    }
+  }
+}

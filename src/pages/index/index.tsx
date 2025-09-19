@@ -1,8 +1,7 @@
 import { Component, PropsWithChildren } from 'react'
 import { View, Text } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { Button } from '@nutui/nutui-react-taro'
 
-import "taro-ui/dist/style/components/button.scss" // 按需引入
 import './index.scss'
 
 export default class Index extends Component<PropsWithChildren> {
@@ -18,11 +17,11 @@ export default class Index extends Component<PropsWithChildren> {
     return (
       <View className='<%= pageName %>'>
         <Text>Hello world!</Text>
-        <AtButton type='primary'>I need Taro UI</AtButton>
+        <Button type="primary">I need Taro UI</Button>
         <Text>Taro UI 支持 Vue 了吗？</Text>
-        <AtButton type='primary' circle={true}>支持</AtButton>
+        <Button type='primary' shape='round'>支持</Button>
         <Text>共建？</Text>
-        <AtButton type='secondary' circle={true}>来</AtButton>
+        <Button type='default' shape='round'>来</Button>
       </View>
     )
   }

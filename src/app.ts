@@ -3,6 +3,9 @@ import Taro from '@tarojs/taro'
 import { storage, setGlobalData, isWeapp } from './utils/config'
 import { getUserInfoByOpenId } from './utils'
 
+// 引入 NutUI 全局样式
+import '@nutui/nutui-react-taro/dist/style.css'
+
 import "./app.scss";
 
 class App extends Component<PropsWithChildren> {
