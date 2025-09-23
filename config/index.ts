@@ -58,6 +58,7 @@ export default defineConfig<"vite">(async (merge) => {
           },
         },
       },
+      debugReact: true,
     },
     h5: {
       publicPath: "/",

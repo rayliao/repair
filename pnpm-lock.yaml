@@ -11,6 +11,9 @@ importers:
       '@babel/runtime':
         specifier: ^7.21.5
         version: 7.28.4
+      '@nutui/icons-react-taro':
+        specifier: ^3.0.1
+        version: 3.0.1
       '@nutui/nutui-react-taro':
         specifier: 3.0.19-cpp-beta.2
         version: 3.0.19-cpp-beta.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1496,6 +1499,9 @@ packages:
     resolution: {integrity: sha512-1SUf/Cg2GzGDyaf15aR9St9TWlb+XvbZXWpDx8YKs7MLzMH/BCeopv+y9vzrzgkfykCGuWOlSu3mZhj2+FQcrg==}
     engines: {node: '>=10'}
     deprecated: This functionality has been moved to @npmcli/fs
+
+  '@nutui/icons-react-taro@3.0.1':
+    resolution: {integrity: sha512-9n0bjd4USjEB481ugGTS1ujzm8WHvp9/JMUp53+NFNgmh9flGsOMOk/B5sMGp4sz4yQERmj4z0EmjYbDB7Q1cw==}
 
   '@nutui/icons-react-taro@3.0.2-beta.3':
     resolution: {integrity: sha512-yEOrGdLBgPxHaNalphoKHZEBGIqNsBZmObosiVDK1NZZcg/fA7e+m0c5Qtf2g+j9FKUebUpDVL3APSG6ROqqbw==}
@@ -9983,6 +9989,8 @@ snapshots:
       mkdirp: 1.0.4
       rimraf: 3.0.2
     optional: true
+
+  '@nutui/icons-react-taro@3.0.1': {}
 
   '@nutui/icons-react-taro@3.0.2-beta.3': {}
 
