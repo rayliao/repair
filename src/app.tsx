@@ -4,8 +4,8 @@ import { Component, PropsWithChildren } from "react";
 // import { getUserInfoByOpenId } from './utils'
 
 // 引入 NutUI 全局样式
-import '@nutui/nutui-react-taro/dist/style.css'
-
+import "@nutui/nutui-react-taro/dist/style.css";
+import { QueryProvider } from "./components/Common/queryClient";
 import "./app.scss";
 
 class App extends Component<PropsWithChildren> {
@@ -27,9 +27,8 @@ class App extends Component<PropsWithChildren> {
     // }
   }
 
-  // this.props.children 是将要会渲染的页面
   render() {
-    return this.props.children;
+    return <QueryProvider>{this.props.children}</QueryProvider>;
   }
 }
 

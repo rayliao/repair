@@ -1,0 +1,141 @@
+.index {
+  background-color: #f8f8f8;
+  min-height: 100vh;
+  padding-bottom: 20px;
+
+  &-header {
+    background: linear-gradient(135deg, #25c9f9 0%, #1ba3d1 100%);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+  }
+
+  &-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  &-content {
+    padding: 20px;
+  }
+
+  .welcome-section {
+    background: white;
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .welcome-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+
+  .feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+
+    .feature-item {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      .feature-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #25c9f9;
+        margin-bottom: 10px;
+      }
+
+      .feature-desc {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  .action-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    :global {
+      .nut-button {
+        width: 100%;
+      }
+    }
+  }
+
+  .tips-section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .tips-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .tip-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding: 15px;
+      background: #f8f8f8;
+      border-radius: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .tip-number {
+        min-width: 30px;
+        width: 30px;
+        height: 30px;
+        background: #25c9f9;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .tip-text {
+        flex: 1;
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+
+        .code {
+          background: #e8e8e8;
+          padding: 0 4px;
+          border-radius: 3px;
+          font-family: 'Monaco', 'Menlo', monospace;
+          font-size: 12px;
+          color: #e74c3c;
+        }
+      }
+    }
+  }
+}
