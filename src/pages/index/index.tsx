@@ -7,10 +7,13 @@ import {
   Grid,
   GridItem,
   Image,
-  Empty
+  Empty,
 } from "@nutui/nutui-react-taro";
 import { useState } from "react";
-import { useGetApiWebInfo, useGetApiServicesList } from "../../api/web-api/web-api";
+import {
+  useGetApiWebInfo,
+  useGetApiServicesList,
+} from "../../api/web-api/web-api";
 
 import "./index.scss";
 
@@ -21,7 +24,7 @@ const CITY_OPTIONS = [
   { label: "上海", value: "shanghai" },
   { label: "广州", value: "guangzhou" },
   { label: "深圳", value: "shenzhen" },
-  { label: "杭州", value: "hangzhou" }
+  { label: "杭州", value: "hangzhou" },
 ];
 
 function Index() {
@@ -30,39 +33,50 @@ function Index() {
   const [cityPickerVisible, setCityPickerVisible] = useState(false);
 
   // 使用 SWR hooks
-  const { data: webInfo, isLoading: webLoading, error: webError } = useGetApiWebInfo();
-  const { data: servicesList, isLoading: servicesLoading, error: servicesError } = useGetApiServicesList();
+  const {
+    data: webInfo,
+    isLoading: webLoading,
+    error: webError,
+  } = useGetApiWebInfo();
+  const {
+    data: servicesList,
+    isLoading: servicesLoading,
+    error: servicesError,
+  } = useGetApiServicesList();
 
   // 调试信息 - 查看数据结构
-  console.log('🔍 [Debug] webInfo:', webInfo);
-  console.log('🔍 [Debug] servicesList:', servicesList);
-  console.log('🔍 [Debug] webInfo type:', typeof webInfo);
-  console.log('🔍 [Debug] servicesList type:', typeof servicesList);
+  console.log("🔍 [Debug] webInfo:", webInfo);
+  console.log("🔍 [Debug] servicesList:", servicesList);
+  console.log("🔍 [Debug] webInfo type:", typeof webInfo);
+  console.log("🔍 [Debug] servicesList type:", typeof servicesList);
 
   // 获取轮播图数据 - 修正数据路径
   const banners = (webInfo as any)?.data?.banner || [];
-  console.log('🎪 [Debug] banners:', banners);
+  console.log("🎪 [Debug] banners:", banners);
 
   // 获取服务列表数据 - 修正数据路径
   const servicesData = Array.isArray((servicesList as any)?.data)
     ? (servicesList as any).data
     : Array.isArray((servicesList as any)?.data?.list)
-      ? (servicesList as any).data.list
-      : [];
+    ? (servicesList as any).data.list
+    : [];
 
   // 如果没有服务数据，提供一些默认服务图标
-  const services = servicesData.length > 0 ? servicesData : [
-    { name: "家电维修", icon: "🔧" },
-    { name: "水电维修", icon: "💧" },
-    { name: "空调维修", icon: "❄️" },
-    { name: "洗衣机维修", icon: "🔄" },
-    { name: "冰箱维修", icon: "🧊" },
-    { name: "热水器维修", icon: "🔥" },
-    { name: "管道疏通", icon: "🚿" },
-    { name: "门窗维修", icon: "🚪" },
-    { name: "其他服务", icon: "🛠" }
-  ];
-  console.log('🛠 [Debug] services:', services);
+  const services =
+    servicesData.length > 0
+      ? servicesData
+      : [
+          { name: "家电维修", icon: "🔧" },
+          { name: "水电维修", icon: "💧" },
+          { name: "空调维修", icon: "❄️" },
+          { name: "洗衣机维修", icon: "🔄" },
+          { name: "冰箱维修", icon: "🧊" },
+          { name: "热水器维修", icon: "🔥" },
+          { name: "管道疏通", icon: "🚿" },
+          { name: "门窗维修", icon: "🚪" },
+          { name: "其他服务", icon: "🛠" },
+        ];
+  console.log("🛠 [Debug] services:", services);
 
   // 城市选择器确认
   const onCityConfirm = (options: any) => {
@@ -72,13 +86,13 @@ function Index() {
 
   // 搜索处理
   const onSearch = (value: string) => {
-    console.log('搜索内容:', value);
+    console.log("搜索内容:", value);
     // TODO: 实现搜索逻辑
   };
 
   // 服务项点击
   const onServiceClick = (service: any) => {
-    console.log('点击服务:', service);
+    console.log("点击服务:", service);
     // TODO: 跳转到服务详情页
   };
 
@@ -87,7 +101,10 @@ function Index() {
       {/* 搜索栏和城市选择 */}
       <View className="search-header">
         <View className="search-row">
-          <View className="city-selector" onClick={() => setCityPickerVisible(true)}>
+          <View
+            className="city-selector"
+            onClick={() => setCityPickerVisible(true)}
+          >
             <View className="city-text">{selectedCity}</View>
             <View className="city-arrow">▼</View>
           </View>
@@ -111,8 +128,6 @@ function Index() {
         onConfirm={onCityConfirm}
         title="选择城市"
       />
-
-      {/* 轮播图 */}
       {banners.length > 0 ? (
         <View className="banner-section">
           <NutSwiper
@@ -157,8 +172,8 @@ function Index() {
               </GridItem>
             ))}
           </Grid>
-        ) : !servicesLoading && (
-          <Empty description="暂无服务数据" />
+        ) : (
+          !servicesLoading && <Empty description="暂无服务数据" />
         )}
       </View>
 
