@@ -8,7 +8,7 @@ module.exports = {
       mode: 'tags-split',
       target: './src/api',
       schemas: './src/api/model',
-      client: 'react-query',
+      client: 'swr',
       httpClient: 'axios',
       baseUrl: 'http://106.55.142.137',
       override: {

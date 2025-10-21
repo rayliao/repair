@@ -1,203 +1,173 @@
-import { View, Text } from "@tarojs/components";
-import { Button, Loading } from "@nutui/nutui-react-taro";
-import { useEffect } from "react";
-import { useGetApiWebInfo } from "../../api/web-api/web-api";
-import { getApiWebInfo } from "../../api/web-api/web-api";
+import { View } from "@tarojs/components";
+import {
+  SearchBar,
+  Picker,
+  Swiper as NutSwiper,
+  SwiperItem as NutSwiperItem,
+  Grid,
+  GridItem,
+  Image,
+  Empty
+} from "@nutui/nutui-react-taro";
+import { useState } from "react";
+import { useGetApiWebInfo, useGetApiServicesList } from "../../api/web-api/web-api";
 
 import "./index.scss";
 
-// 使用 hooks 的函数组件
+// 城市选项
+const CITY_OPTIONS = [
+  { label: "全国", value: "all" },
+  { label: "北京", value: "beijing" },
+  { label: "上海", value: "shanghai" },
+  { label: "广州", value: "guangzhou" },
+  { label: "深圳", value: "shenzhen" },
+  { label: "杭州", value: "hangzhou" }
+];
+
 function Index() {
-  console.log('📄 首页组件渲染中...');
+  const [searchText, setSearchText] = useState("");
+  const [selectedCity, setSelectedCity] = useState("全国");
+  const [cityPickerVisible, setCityPickerVisible] = useState(false);
 
-  const { data, isLoading, error } = useGetApiWebInfo();
+  // 使用 SWR hooks
+  const { data: webInfo, isLoading: webLoading, error: webError } = useGetApiWebInfo();
+  const { data: servicesList, isLoading: servicesLoading, error: servicesError } = useGetApiServicesList();
 
-  // 调试日志
-  useEffect(() => {
-    console.log("🚀 首页组件已挂载，hook 已调用");
-    console.log("📊 数据:", data);
-    console.log("⏳ 加载中:", isLoading);
-    console.log("❌ 错误:", error);
-  }, [data, isLoading, error]);
+  // 调试信息 - 查看数据结构
+  console.log('🔍 [Debug] webInfo:', webInfo);
+  console.log('🔍 [Debug] servicesList:', servicesList);
+  console.log('🔍 [Debug] webInfo type:', typeof webInfo);
+  console.log('🔍 [Debug] servicesList type:', typeof servicesList);
 
-  // 测试直接调用 API 函数
-  useEffect(() => {
-    console.log('🧪 测试直接调用 getApiWebInfo...');
-    getApiWebInfo()
-      .then(res => {
-        console.log('✅ 直接调用成功:', res);
-      })
-      .catch(err => {
-        console.error('❌ 直接调用失败:', err);
-      });
-  }, []);
-  if (isLoading) {
-    return (
-      <View className="index">
-        <View className="index-header">
-          <Text className="index-title">首页</Text>
-        </View>
-        <View
-          className="index-content"
-          style={{ textAlign: "center", paddingTop: "40px" }}
-        >
-          <Loading />
-          <Text style={{ marginTop: "10px" }}>加载中...</Text>
-        </View>
-      </View>
-    );
-  }
+  // 获取轮播图数据 - 修正数据路径
+  const banners = (webInfo as any)?.data?.banner || [];
+  console.log('🎪 [Debug] banners:', banners);
 
-  if (error) {
-    return (
-      <View className="index">
-        <View className="index-header">
-          <Text className="index-title">首页</Text>
-        </View>
-        <View
-          className="index-content"
-          style={{ textAlign: "center", paddingTop: "40px" }}
-        >
-          <Text style={{ color: "#f56c6c" }}>加载失败: {String(error)}</Text>
-        </View>
-      </View>
-    );
-  }
+  // 获取服务列表数据 - 修正数据路径
+  const servicesData = Array.isArray((servicesList as any)?.data)
+    ? (servicesList as any).data
+    : Array.isArray((servicesList as any)?.data?.list)
+      ? (servicesList as any).data.list
+      : [];
+
+  // 如果没有服务数据，提供一些默认服务图标
+  const services = servicesData.length > 0 ? servicesData : [
+    { name: "家电维修", icon: "🔧" },
+    { name: "水电维修", icon: "💧" },
+    { name: "空调维修", icon: "❄️" },
+    { name: "洗衣机维修", icon: "🔄" },
+    { name: "冰箱维修", icon: "🧊" },
+    { name: "热水器维修", icon: "🔥" },
+    { name: "管道疏通", icon: "🚿" },
+    { name: "门窗维修", icon: "🚪" },
+    { name: "其他服务", icon: "🛠" }
+  ];
+  console.log('🛠 [Debug] services:', services);
+
+  // 城市选择器确认
+  const onCityConfirm = (options: any) => {
+    setSelectedCity(options[0]?.label || "全国");
+    setCityPickerVisible(false);
+  };
+
+  // 搜索处理
+  const onSearch = (value: string) => {
+    console.log('搜索内容:', value);
+    // TODO: 实现搜索逻辑
+  };
+
+  // 服务项点击
+  const onServiceClick = (service: any) => {
+    console.log('点击服务:', service);
+    // TODO: 跳转到服务详情页
+  };
 
   return (
-    <View className="index">
-      <View className="index-header">
-        <Text className="index-title">首页</Text>
+    <View className="index-page">
+      {/* 搜索栏和城市选择 */}
+      <View className="search-header">
+        <View className="search-row">
+          <View className="city-selector" onClick={() => setCityPickerVisible(true)}>
+            <View className="city-text">{selectedCity}</View>
+            <View className="city-arrow">▼</View>
+          </View>
+
+          <View className="search-container">
+            <SearchBar
+              value={searchText}
+              placeholder="搜索维修服务"
+              onChange={setSearchText}
+              onSearch={onSearch}
+            />
+          </View>
+        </View>
       </View>
 
-      <View className="index-content">
-        {/* API 数据展示 */}
-        {data && (
-          <View
-            className="api-data-section"
-            style={{
-              background: "#f0f9ff",
-              padding: "15px",
-              borderRadius: "8px",
-              marginBottom: "20px",
-              borderLeft: "4px solid #409eff",
-            }}
+      {/* 城市选择器 */}
+      <Picker
+        visible={cityPickerVisible}
+        options={[CITY_OPTIONS]}
+        onClose={() => setCityPickerVisible(false)}
+        onConfirm={onCityConfirm}
+        title="选择城市"
+      />
+
+      {/* 轮播图 */}
+      {banners.length > 0 ? (
+        <View className="banner-section">
+          <NutSwiper
+            autoPlay
+            interval={3000}
+            indicator
+            indicatorColor="#f0f0f0"
+            indicatorActiveColor="#fa2c19"
+            height="200"
           >
-            <Text
-              style={{
-                fontWeight: "bold",
-                marginBottom: "10px",
-                display: "block",
-              }}
-            >
-              📡 API 返回数据
-            </Text>
-            <Text
-              style={{
-                fontSize: "12px",
-                color: "#666",
-                marginBottom: "5px",
-                display: "block",
-              }}
-            >
-              网站名称: {(data as any)?.name || "(暂无)"}
-            </Text>
-            {(data as any)?.logo && (
-              <Text
-                style={{
-                  fontSize: "12px",
-                  color: "#666",
-                  marginBottom: "5px",
-                  display: "block",
-                }}
-              >
-                Logo: {(data as any)?.logo}
-              </Text>
-            )}
-            {(data as any)?.banner && (data as any)?.banner.length > 0 && (
-              <Text
-                style={{ fontSize: "12px", color: "#666", display: "block" }}
-              >
-                横幅数量: {(data as any)?.banner.length}
-              </Text>
-            )}
-          </View>
+            {banners.map((bannerUrl: string, index: number) => (
+              <NutSwiperItem key={index}>
+                <View className="banner-item">
+                  <Image
+                    src={`http://106.55.142.137${bannerUrl}`}
+                    width="100%"
+                    height="200"
+                    fit="cover"
+                    alt={`轮播图${index + 1}`}
+                  />
+                </View>
+              </NutSwiperItem>
+            ))}
+          </NutSwiper>
+        </View>
+      ) : null}
+
+      {/* 服务列表 */}
+      <View className="services-section">
+        <View className="section-title">热门服务</View>
+
+        {services.length > 0 ? (
+          <Grid columns={3} gap={10}>
+            {services.slice(0, 9).map((service: any, index: number) => (
+              <GridItem key={index} onClick={() => onServiceClick(service)}>
+                <View className="service-item">
+                  <View className="service-icon">{service.icon || "🔧"}</View>
+                  <View className="service-name">
+                    {service.name || service.title || `服务${index + 1}`}
+                  </View>
+                </View>
+              </GridItem>
+            ))}
+          </Grid>
+        ) : !servicesLoading && (
+          <Empty description="暂无服务数据" />
         )}
-
-        <View className="welcome-section">
-          <Text className="welcome-text">欢迎使用维修服务平台</Text>
-          <Text className="description">
-            已集成 Orval + React Query + Taro.request
-          </Text>
-        </View>
-
-        <View className="feature-list">
-          <View className="feature-item">
-            <Text className="feature-title">🚀 快速生成</Text>
-            <Text className="feature-desc">
-              从 Swagger 文档自动生成 API 代码
-            </Text>
-          </View>
-
-          <View className="feature-item">
-            <Text className="feature-title">⚡ 类型安全</Text>
-            <Text className="feature-desc">完整的 TypeScript 类型支持</Text>
-          </View>
-
-          <View className="feature-item">
-            <Text className="feature-title">💾 自动缓存</Text>
-            <Text className="feature-desc">React Query 自动管理数据缓存</Text>
-          </View>
-
-          <View className="feature-item">
-            <Text className="feature-title">🔄 跨平台</Text>
-            <Text className="feature-desc">Taro 框架支持多端编译</Text>
-          </View>
-        </View>
-
-        <View className="action-section">
-          <Button
-            type="primary"
-            size="large"
-            onClick={() => {
-              console.log("查看文档: ORVAL_GUIDE.md");
-            }}
-          >
-            查看 API 集成指南
-          </Button>
-
-          <Button
-            type="primary"
-            fill="outline"
-            size="large"
-            onClick={() => {
-              console.log("查看示例: API_USAGE_GUIDE.md");
-            }}
-          >
-            查看使用示例
-          </Button>
-        </View>
-
-        <View className="tips-section">
-          <Text className="tips-title">快速开始</Text>
-          <View className="tip-item">
-            <Text className="tip-number">1</Text>
-            <Text className="tip-text">运行 pnpm api:gen 生成 API 代码</Text>
-          </View>
-          <View className="tip-item">
-            <Text className="tip-number">2</Text>
-            <Text className="tip-text">在 app.ts 中添加 QueryProvider</Text>
-          </View>
-          <View className="tip-item">
-            <Text className="tip-number">3</Text>
-            <Text className="tip-text">在组件中使用生成的 hooks</Text>
-          </View>
-          <View className="tip-item">
-            <Text className="tip-number">4</Text>
-            <Text className="tip-text">享受类型安全和自动缓存管理</Text>
-          </View>
-        </View>
       </View>
+
+      {/* 错误状态 */}
+      {(webError || servicesError) && !webLoading && !servicesLoading && (
+        <View className="error-container">
+          <Empty description="加载失败，请检查网络连接" />
+        </View>
+      )}
     </View>
   );
 }

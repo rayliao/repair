@@ -4,20 +4,11 @@
  * 互帮Api
  * OpenAPI spec version: v1
  */
-import {
-  useQuery
-} from '@tanstack/react-query';
+import useSwr from 'swr';
 import type {
-  DataTag,
-  DefinedInitialDataOptions,
-  DefinedUseQueryResult,
-  QueryClient,
-  QueryFunction,
-  QueryKey,
-  UndefinedInitialDataOptions,
-  UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  Key,
+  SWRConfiguration
+} from 'swr';
 
 import type {
   WebInfo,
@@ -27,278 +18,120 @@ import type {
 import { createTaroAxiosInstance } from '../../utils/taroAxios';
 
 
-
-
+  
+  
+  
 /**
  * @summary 获取网站信息
  */
 export const getApiWebInfo = (
     
- signal?: AbortSignal
-) => {
-      
-      
-      return createTaroAxiosInstance<WebInfo>(
-      {url: `http://106.55.142.137/api/web/info`, method: 'GET', signal
+ ) => {
+    return createTaroAxiosInstance<WebInfo>(
+    {url: `http://106.55.142.137/api/web/info`, method: 'GET'
     },
-      );
-    }
-  
+    );
+  }
 
 
 
-export const getGetApiWebInfoQueryKey = () => {
-    return [
-    `http://106.55.142.137/api/web/info`
-    ] as const;
-    }
-
-    
-export const getGetApiWebInfoQueryOptions = <TData = Awaited<ReturnType<typeof getApiWebInfo>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiWebInfo>>, TError, TData>>, }
-) => {
-
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiWebInfoQueryKey();
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiWebInfo>>> = ({ signal }) => getApiWebInfo(signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiWebInfo>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
+export const getGetApiWebInfoKey = () => [`http://106.55.142.137/api/web/info`] as const;
 
 export type GetApiWebInfoQueryResult = NonNullable<Awaited<ReturnType<typeof getApiWebInfo>>>
 export type GetApiWebInfoQueryError = unknown
 
-
-export function useGetApiWebInfo<TData = Awaited<ReturnType<typeof getApiWebInfo>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiWebInfo>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiWebInfo>>,
-          TError,
-          Awaited<ReturnType<typeof getApiWebInfo>>
-        > , 'initialData'
-      >, }
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiWebInfo<TData = Awaited<ReturnType<typeof getApiWebInfo>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiWebInfo>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiWebInfo>>,
-          TError,
-          Awaited<ReturnType<typeof getApiWebInfo>>
-        > , 'initialData'
-      >, }
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiWebInfo<TData = Awaited<ReturnType<typeof getApiWebInfo>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiWebInfo>>, TError, TData>>, }
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 获取网站信息
  */
+export const useGetApiWebInfo = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getApiWebInfo>>, TError> & { swrKey?: Key, enabled?: boolean },  }
+) => {
+  const {swr: swrOptions} = options ?? {}
 
-export function useGetApiWebInfo<TData = Awaited<ReturnType<typeof getApiWebInfo>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiWebInfo>>, TError, TData>>, }
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetApiWebInfoKey() : null);
+  const swrFn = () => getApiWebInfo()
 
-  const queryOptions = getGetApiWebInfoQueryOptions(options)
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+  return {
+    swrKey,
+    ...query
+  }
 }
-
-
-
 /**
  * @summary 获取城市列表
  */
 export const getApiCityList = (
     
- signal?: AbortSignal
-) => {
-      
-      
-      return createTaroAxiosInstance<WebServiceTypeDto[]>(
-      {url: `http://106.55.142.137/api/city/list`, method: 'GET', signal
+ ) => {
+    return createTaroAxiosInstance<WebServiceTypeDto[]>(
+    {url: `http://106.55.142.137/api/city/list`, method: 'GET'
     },
-      );
-    }
-  
+    );
+  }
 
 
 
-export const getGetApiCityListQueryKey = () => {
-    return [
-    `http://106.55.142.137/api/city/list`
-    ] as const;
-    }
-
-    
-export const getGetApiCityListQueryOptions = <TData = Awaited<ReturnType<typeof getApiCityList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCityList>>, TError, TData>>, }
-) => {
-
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiCityListQueryKey();
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCityList>>> = ({ signal }) => getApiCityList(signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiCityList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
+export const getGetApiCityListKey = () => [`http://106.55.142.137/api/city/list`] as const;
 
 export type GetApiCityListQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCityList>>>
 export type GetApiCityListQueryError = unknown
 
-
-export function useGetApiCityList<TData = Awaited<ReturnType<typeof getApiCityList>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCityList>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiCityList>>,
-          TError,
-          Awaited<ReturnType<typeof getApiCityList>>
-        > , 'initialData'
-      >, }
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiCityList<TData = Awaited<ReturnType<typeof getApiCityList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCityList>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiCityList>>,
-          TError,
-          Awaited<ReturnType<typeof getApiCityList>>
-        > , 'initialData'
-      >, }
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiCityList<TData = Awaited<ReturnType<typeof getApiCityList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCityList>>, TError, TData>>, }
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 获取城市列表
  */
+export const useGetApiCityList = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getApiCityList>>, TError> & { swrKey?: Key, enabled?: boolean },  }
+) => {
+  const {swr: swrOptions} = options ?? {}
 
-export function useGetApiCityList<TData = Awaited<ReturnType<typeof getApiCityList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCityList>>, TError, TData>>, }
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetApiCityListKey() : null);
+  const swrFn = () => getApiCityList()
 
-  const queryOptions = getGetApiCityListQueryOptions(options)
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+  return {
+    swrKey,
+    ...query
+  }
 }
-
-
-
 /**
  * @summary 网站服务列表
  */
 export const getApiServicesList = (
     
- signal?: AbortSignal
-) => {
-      
-      
-      return createTaroAxiosInstance<string[]>(
-      {url: `http://106.55.142.137/api/services/list`, method: 'GET', signal
+ ) => {
+    return createTaroAxiosInstance<string[]>(
+    {url: `http://106.55.142.137/api/services/list`, method: 'GET'
     },
-      );
-    }
-  
+    );
+  }
 
 
 
-export const getGetApiServicesListQueryKey = () => {
-    return [
-    `http://106.55.142.137/api/services/list`
-    ] as const;
-    }
-
-    
-export const getGetApiServicesListQueryOptions = <TData = Awaited<ReturnType<typeof getApiServicesList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiServicesList>>, TError, TData>>, }
-) => {
-
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiServicesListQueryKey();
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiServicesList>>> = ({ signal }) => getApiServicesList(signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiServicesList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
+export const getGetApiServicesListKey = () => [`http://106.55.142.137/api/services/list`] as const;
 
 export type GetApiServicesListQueryResult = NonNullable<Awaited<ReturnType<typeof getApiServicesList>>>
 export type GetApiServicesListQueryError = unknown
 
-
-export function useGetApiServicesList<TData = Awaited<ReturnType<typeof getApiServicesList>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiServicesList>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiServicesList>>,
-          TError,
-          Awaited<ReturnType<typeof getApiServicesList>>
-        > , 'initialData'
-      >, }
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiServicesList<TData = Awaited<ReturnType<typeof getApiServicesList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiServicesList>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiServicesList>>,
-          TError,
-          Awaited<ReturnType<typeof getApiServicesList>>
-        > , 'initialData'
-      >, }
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiServicesList<TData = Awaited<ReturnType<typeof getApiServicesList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiServicesList>>, TError, TData>>, }
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 网站服务列表
  */
+export const useGetApiServicesList = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getApiServicesList>>, TError> & { swrKey?: Key, enabled?: boolean },  }
+) => {
+  const {swr: swrOptions} = options ?? {}
 
-export function useGetApiServicesList<TData = Awaited<ReturnType<typeof getApiServicesList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiServicesList>>, TError, TData>>, }
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetApiServicesListKey() : null);
+  const swrFn = () => getApiServicesList()
 
-  const queryOptions = getGetApiServicesListQueryOptions(options)
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+  return {
+    swrKey,
+    ...query
+  }
 }
-
-
-
