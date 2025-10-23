@@ -16,9 +16,6 @@ export default {
       proxy: {
         "/api/": {
           target: JSON.parse(HOST),
-          // pathRewrite: {
-          //   "^/api/": "/",
-          // },
           changeOrigin: true,
         },
       },

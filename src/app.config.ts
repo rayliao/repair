@@ -6,10 +6,10 @@ export default defineAppConfig({
     "pages/profile/index",
   ],
   window: {
-    backgroundTextStyle: "light",
-    navigationBarBackgroundColor: "#fff",
-    navigationBarTitleText: "WeChat",
-    navigationBarTextStyle: "black",
+    navigationBarBackgroundColor: "#d81e06",
+    navigationBarTitleText: "维修服务",
+    navigationBarTextStyle: "white",
+    backgroundColor: "#f8f8f8",
   },
   tabBar: {
     color: "#666666",

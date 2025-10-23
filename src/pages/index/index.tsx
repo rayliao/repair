@@ -1,36 +1,27 @@
 import { View } from "@tarojs/components";
 import {
-  SearchBar,
-  Picker,
+  Elevator,
   Swiper as NutSwiper,
   SwiperItem as NutSwiperItem,
   Grid,
-  GridItem,
   Image,
   Empty,
+  Popup,
 } from "@nutui/nutui-react-taro";
 import { useState } from "react";
 import {
   useGetApiWebInfo,
   useGetApiServicesList,
+  useGetApiCityList,
 } from "../../api/web-api/web-api";
+import Header from "../../components/Header";
 
 import "./index.scss";
-
-// 城市选项
-const CITY_OPTIONS = [
-  { label: "全国", value: "all" },
-  { label: "北京", value: "beijing" },
-  { label: "上海", value: "shanghai" },
-  { label: "广州", value: "guangzhou" },
-  { label: "深圳", value: "shenzhen" },
-  { label: "杭州", value: "hangzhou" },
-];
 
 function Index() {
   const [searchText, setSearchText] = useState("");
   const [selectedCity, setSelectedCity] = useState("全国");
-  const [cityPickerVisible, setCityPickerVisible] = useState(false);
+  const [elevatorVisible, setElevatorVisible] = useState(false);
 
   // 使用 SWR hooks
   const {
@@ -43,16 +34,14 @@ function Index() {
     isLoading: servicesLoading,
     error: servicesError,
   } = useGetApiServicesList();
-
-  // 调试信息 - 查看数据结构
-  console.log("🔍 [Debug] webInfo:", webInfo);
-  console.log("🔍 [Debug] servicesList:", servicesList);
-  console.log("🔍 [Debug] webInfo type:", typeof webInfo);
-  console.log("🔍 [Debug] servicesList type:", typeof servicesList);
+  const { data: cityList } = useGetApiCityList();
 
   // 获取轮播图数据 - 修正数据路径
-  const banners = (webInfo as any)?.data?.banner || [];
-  console.log("🎪 [Debug] banners:", banners);
+  const bannersArray: any[] = Array.isArray((webInfo as any)?.data?.banner)
+    ? (webInfo as any).data.banner
+    : [];
+
+  const banners = bannersArray as string[];
 
   // 获取服务列表数据 - 修正数据路径
   const servicesData = Array.isArray((servicesList as any)?.data)
@@ -76,12 +65,47 @@ function Index() {
           { name: "门窗维修", icon: "🚪" },
           { name: "其他服务", icon: "🛠" },
         ];
-  console.log("🛠 [Debug] services:", services);
 
-  // 城市选择器确认
-  const onCityConfirm = (options: any) => {
-    setSelectedCity(options[0]?.label || "全国");
-    setCityPickerVisible(false);
+  // 处理城市数据 - 为 Elevator 格式化
+  const rawCities = Array.isArray((cityList as any)?.data)
+    ? (cityList as any).data
+    : Array.isArray(cityList)
+    ? (cityList as any)
+    : [
+        { name: "全国", id: "all" },
+        { name: "北京", id: "beijing" },
+        { name: "上海", id: "shanghai" },
+        { name: "广州", id: "guangzhou" },
+        { name: "深圳", id: "shenzhen" },
+        { name: "杭州", id: "hangzhou" },
+        { name: "苏州", id: "suzhou" },
+        { name: "成都", id: "chengdu" },
+        { name: "武汉", id: "wuhan" },
+        { name: "西安", id: "xian" },
+        { name: "长沙", id: "changsha" },
+        { name: "青岛", id: "qingdao" },
+      ];
+  // 为 Elevator 格式化城市数据
+  const elevatorData = [
+    {
+      title: "城市列表",
+      list: rawCities.map((city: any, index: number) => {
+        // 处理城市数据，city 可能是字符串或对象
+        const cityName =
+          typeof city === "string" ? city : city?.name || "未知城市";
+        return {
+          name: cityName,
+          id: `city_${index}`,
+          key: `city_${index}`,
+        };
+      }),
+    },
+  ];
+
+  // 城市选择处理
+  const onCitySelect = (item: any) => {
+    setSelectedCity(item.name);
+    setElevatorVisible(false);
   };
 
   // 搜索处理
@@ -96,81 +120,100 @@ function Index() {
     // TODO: 跳转到服务详情页
   };
 
+  // 轮播图渲染
+  const bannerContent =
+    banners && banners.length > 0 ? (
+      <View className="banner-section">
+        <NutSwiper
+          autoPlay
+          interval={3000}
+          indicator
+          indicatorColor="#f0f0f0"
+          indicatorActiveColor="#fa2c19"
+          height="200"
+        >
+          {banners.map((bannerUrl: string, index: number) => (
+            <NutSwiperItem key={index}>
+              <View className="banner-item">
+                <Image
+                  src={`http://106.55.142.137${bannerUrl}`}
+                  width="100%"
+                  height="200"
+                  fit="cover"
+                  alt={`轮播图${index + 1}`}
+                />
+              </View>
+            </NutSwiperItem>
+          ))}
+        </NutSwiper>
+      </View>
+    ) : null;
+
   return (
     <View className="index-page">
-      {/* 搜索栏和城市选择 */}
-      <View className="search-header">
-        <View className="search-row">
-          <View
-            className="city-selector"
-            onClick={() => setCityPickerVisible(true)}
-          >
-            <View className="city-text">{selectedCity}</View>
-            <View className="city-arrow">▼</View>
-          </View>
-
-          <View className="search-container">
-            <SearchBar
-              value={searchText}
-              placeholder="搜索维修服务"
-              onChange={setSearchText}
-              onSearch={onSearch}
-            />
-          </View>
-        </View>
-      </View>
-
-      {/* 城市选择器 */}
-      <Picker
-        visible={cityPickerVisible}
-        options={[CITY_OPTIONS]}
-        onClose={() => setCityPickerVisible(false)}
-        onConfirm={onCityConfirm}
-        title="选择城市"
+      {/* 自定义头部 - 包含标题、搜索栏和城市选择 */}
+      <Header
+        title="关师傅维修"
+        searchValue={searchText}
+        onSearchChange={setSearchText}
+        onSearch={onSearch}
+        selectedCity={selectedCity}
+        onCitySelect={() => setElevatorVisible(true)}
       />
-      {banners.length > 0 ? (
-        <View className="banner-section">
-          <NutSwiper
-            autoPlay
-            interval={3000}
-            indicator
-            indicatorColor="#f0f0f0"
-            indicatorActiveColor="#fa2c19"
-            height="200"
-          >
-            {banners.map((bannerUrl: string, index: number) => (
-              <NutSwiperItem key={index}>
-                <View className="banner-item">
-                  <Image
-                    src={`http://106.55.142.137${bannerUrl}`}
-                    width="100%"
-                    height="200"
-                    fit="cover"
-                    alt={`轮播图${index + 1}`}
-                  />
-                </View>
-              </NutSwiperItem>
-            ))}
-          </NutSwiper>
+      {/* 城市选择器 - 使用 Elevator + Popup */}
+      <Popup
+        visible={elevatorVisible}
+        position="bottom"
+        onClose={() => setElevatorVisible(false)}
+        closeable
+        style={{ height: "60vh" }}
+      >
+        <View style={{ padding: "10px 0" }}>
+          <Elevator
+            list={elevatorData}
+            height="auto"
+            onItemClick={onCitySelect}
+          />
         </View>
-      ) : null}
+      </Popup>
+
+      {bannerContent as any}
 
       {/* 服务列表 */}
       <View className="services-section">
         <View className="section-title">热门服务</View>
-
         {services.length > 0 ? (
-          <Grid columns={3} gap={10}>
-            {services.slice(0, 9).map((service: any, index: number) => (
-              <GridItem key={index} onClick={() => onServiceClick(service)}>
-                <View className="service-item">
-                  <View className="service-icon">{service.icon || "🔧"}</View>
-                  <View className="service-name">
-                    {service.name || service.title || `服务${index + 1}`}
-                  </View>
-                </View>
-              </GridItem>
-            ))}
+          <Grid>
+            {services.map((service: any, index: number) => {
+              // 拼接图片地址
+              const imageUrl =
+                service.icon || service.logo
+                  ? `http://106.55.142.137${service.icon || service.logo}`
+                  : null;
+
+              return (
+                <Grid.Item
+                  className="service-item"
+                  key={index}
+                  onClick={() => onServiceClick(service)}
+                  text={service.name || "未知服务"}
+                >
+                  {imageUrl ? (
+                    <Image
+                      src={imageUrl}
+                      width="45"
+                      height="45"
+                      className="service-icon-image"
+                      alt={service.name}
+                    />
+                  ) : (
+                    <View className="service-icon">
+                      {service.name?.charAt(0) || "🔧"}
+                    </View>
+                  )}
+                </Grid.Item>
+              );
+            })}
           </Grid>
         ) : (
           !servicesLoading && <Empty description="暂无服务数据" />

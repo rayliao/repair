@@ -9,13 +9,7 @@ export default defineConfig<"vite">(async (merge) => {
   const baseConfig: UserConfigExport<"vite"> = {
     projectName: "repair",
     date: "2025-9-18",
-    // 配置 NutUI 375 尺寸
-    designWidth(input: any) {
-      if (input?.file?.replace(/\\+/g, "/").indexOf("@nutui") > -1) {
-        return 375;
-      }
-      return 750;
-    },
+    designWidth: 375,
     deviceRatio: {
       640: 2.34 / 2,
       750: 1,
