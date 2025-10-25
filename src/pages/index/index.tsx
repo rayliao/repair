@@ -1,20 +1,22 @@
-import { View } from "@tarojs/components";
+import { View, Image } from "@tarojs/components";
 import {
   Elevator,
   Swiper as NutSwiper,
   SwiperItem as NutSwiperItem,
   Grid,
-  Image,
   Empty,
   Popup,
+  SearchBar,
+  Button,
 } from "@nutui/nutui-react-taro";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import Taro from "@tarojs/taro";
 import {
   useGetApiWebInfo,
   useGetApiServicesList,
   useGetApiCityList,
 } from "../../api/web-api/web-api";
-import Header from "../../components/Header";
+import logo from "../../images/logo.png";
 
 import "./index.scss";
 
@@ -22,6 +24,12 @@ function Index() {
   const [searchText, setSearchText] = useState("");
   const [selectedCity, setSelectedCity] = useState("全国");
   const [elevatorVisible, setElevatorVisible] = useState(false);
+
+  // 获取系统信息中的状态栏高度
+  const statusBarHeight = useMemo(() => {
+    const systemInfo = Taro.getSystemInfoSync();
+    return systemInfo.statusBarHeight || 0;
+  }, []);
 
   // 使用 SWR hooks
   const {
@@ -137,10 +145,7 @@ function Index() {
               <View className="banner-item">
                 <Image
                   src={`http://106.55.142.137${bannerUrl}`}
-                  width="100%"
-                  height="200"
-                  fit="cover"
-                  alt={`轮播图${index + 1}`}
+                  mode="scaleToFill"
                 />
               </View>
             </NutSwiperItem>
@@ -151,15 +156,52 @@ function Index() {
 
   return (
     <View className="index-page">
-      {/* 自定义头部 - 包含标题、搜索栏和城市选择 */}
-      <Header
-        title="关师傅维修"
-        searchValue={searchText}
-        onSearchChange={setSearchText}
-        onSearch={onSearch}
-        selectedCity={selectedCity}
-        onCitySelect={() => setElevatorVisible(true)}
-      />
+      {/* 自定义头部 - 内联 Header 组件 */}
+      <View className="header-container" style={{ paddingTop: `${statusBarHeight}px` }}>
+        {/* 标题行 */}
+        <View className="header-title-row">
+          <Image
+            src={logo}
+            className="header-logo"
+            mode="scaleToFill"
+          />
+          <View className="header-title">关师傅维修</View>
+        </View>
+
+        {/* 搜索栏行 */}
+        <View className="header-search-row">
+          {/* SearchBar 搜索框 - 城市选择在 leftIn，搜索按钮在 rightIn */}
+          <View className="search-bar-wrapper">
+            <SearchBar
+              className="header-search-bar"
+              value={searchText}
+              placeholder="搜索维修服务"
+              onChange={setSearchText}
+              onSearch={onSearch}
+              shape="round"
+              maxLength={50}
+              clearable
+              leftIn={
+                <View className="city-selector" onClick={() => setElevatorVisible(true)}>
+                  <View className="city-text">{selectedCity}</View>
+                  <View className="city-icon">▼</View>
+                </View>
+              }
+              rightIn={
+                <Button
+                  className="search-button"
+                  type="primary"
+                  size="small"
+                  onClick={() => onSearch(searchText)}
+                >
+                  搜索
+                </Button>
+              }
+            />
+          </View>
+        </View>
+      </View>
+
       {/* 城市选择器 - 使用 Elevator + Popup */}
       <Popup
         visible={elevatorVisible}
@@ -201,10 +243,8 @@ function Index() {
                   {imageUrl ? (
                     <Image
                       src={imageUrl}
-                      width="45"
-                      height="45"
+                      mode="scaleToFill"
                       className="service-icon-image"
-                      alt={service.name}
                     />
                   ) : (
                     <View className="service-icon">

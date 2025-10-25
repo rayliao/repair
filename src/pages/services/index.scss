@@ -1,62 +1,69 @@
-.services {
-  padding: 20px;
-  background-color: #f8f8f8;
-  min-height: 100vh;
+.services-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5f5;
 
-  &-header {
-    text-align: center;
-    margin-bottom: 30px;
+  /* 搜索框部分 */
+  .search-section {
+    padding: 10px 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
   }
 
-  &-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
+  /* 加载/错误/空状态容器 */
+  .loading-container,
+  .error-container,
+  .empty-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
   }
 
-  &-content {
-    .service-category {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* 侧边栏 + 内容区域 */
+  .services-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    background-color: #fff;
 
-      .category-title {
-        font-size: 20px;
-        font-weight: bold;
-        color: #25c9f9;
-        margin-bottom: 15px;
-      }
-
-      .service-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-
-        .service-item {
-          background: #f5f5f5;
-          border-radius: 8px;
-          padding: 20px;
-          text-align: center;
-          border: 1px solid #e0e0e0;
-
-          &:hover {
-            background: #25c9f9;
-            color: white;
-          }
-
-          .service-name {
-            font-size: 16px;
-            color: #666;
-          }
-        }
-      }
+    /* 左侧侧边栏 */
+    .sidebar-wrapper {
+      background-color: #f5f5f5;
+      overflow-y: auto;
+      flex-shrink: 0;
     }
 
-    .quick-action {
-      margin-top: 40px;
-      text-align: center;
+    /* 右侧内容区域 */
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+
+      .services-list {
+        flex: 1;
+        padding: 15px;
+
+        .category-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 15px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e5e5e5;
+        }
+      }
+
+      .no-results {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
     }
   }
 }

@@ -3,6 +3,161 @@
   min-height: 100vh;
   background-color: #f5f5f5;
 
+  /* Header 样式 - 内联从 components/Header */
+  .header-container {
+    width: 100%;
+    background-color: #d81e06;
+    padding: 0;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+
+    .header-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 44px;
+      padding: 0 16px;
+      box-sizing: border-box;
+      width: 100%;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      gap: 8px;
+
+      .header-logo {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        border-radius: 4px;
+      }
+
+      .header-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+        margin: 0;
+        line-height: 1;
+      }
+    }
+
+    .header-search-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      padding: 8px 12px;
+      box-sizing: border-box;
+      width: 100%;
+
+      .search-bar-wrapper {
+        flex: 1;
+        height: 34px;
+        display: flex;
+        align-items: center;
+
+        .header-search-bar {
+          width: 100% !important;
+          height: 34px !important;
+          background: rgba(255, 255, 255, 0.9) !important;
+          border-radius: 17px !important;
+          padding: 0 !important;
+
+          :global(.nut-searchbar) {
+            height: 34px !important;
+            background: transparent !important;
+            border-radius: 17px !important;
+            border: none !important;
+            padding: 0 12px !important;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+
+            :global(.nut-searchbar__content) {
+              height: 34px !important;
+              background: transparent !important;
+              border-radius: 17px !important;
+              flex: 1;
+              display: flex;
+              align-items: center;
+            }
+
+            :global(.nut-searchbar__input) {
+              height: 34px !important;
+              font-size: 13px !important;
+              color: #333333 !important;
+              background: transparent !important;
+              line-height: 34px !important;
+
+              &::placeholder {
+                color: #cccccc !important;
+                font-size: 13px !important;
+              }
+            }
+
+            :global(.nut-searchbar__search-icon) {
+              color: #999999 !important;
+              font-size: 14px !important;
+            }
+
+            :global(.nut-searchbar__clear-btn) {
+              color: #999999 !important;
+            }
+          }
+        }
+
+        .city-selector {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          height: 34px;
+          padding: 0 10px;
+          background-color: transparent;
+          border-radius: 17px;
+          white-space: nowrap;
+          flex-shrink: 0;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-right: 8px;
+
+          &:active {
+            transform: scale(0.98);
+          }
+
+          .city-text {
+            font-size: 13px;
+            color: #333333;
+            font-weight: 500;
+          }
+
+          .city-icon {
+            font-size: 10px;
+            color: #333333;
+            opacity: 0.9;
+          }
+        }
+
+        .search-button {
+          min-width: 60px !important;
+          height: 30px !important;
+          border-radius: 15px !important;
+          font-size: 13px !important;
+          font-weight: 500 !important;
+          flex-shrink: 0 !important;
+          background-color: #d81e06 !important;
+          color: #ffffff !important;
+          border: none !important;
+          padding: 0 14px !important;
+          margin-left: 8px !important;
+
+          &:active {
+            transform: scale(0.98);
+          }
+        }
+      }
+    }
+  }
+
   // 加载状态
   .loading-container {
     display: flex;

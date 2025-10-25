@@ -1,123 +1,135 @@
-import { Component, PropsWithChildren } from 'react'
-import { View, Text } from '@tarojs/components'
-import { Button, Avatar, Cell, CellGroup } from '@nutui/nutui-react-taro'
-import './index.scss'
+import { View, Image } from "@tarojs/components";
+import {
+  Button,
+  Cell,
+} from "@nutui/nutui-react-taro";
+import {
+  Heart,
+  Comment,
+  Location,
+  Feedback,
+  Setting,
+  Phone,
+  ArrowRight,
+} from "@nutui/icons-react-taro";
+import { useState } from "react";
+import "./index.scss";
 
-export default class Profile extends Component<PropsWithChildren> {
-  state = {
-    userInfo: {
-      name: '用户名',
-      phone: '138****8888',
-      avatar: ''
-    },
-    stats: [
-      { label: '待付款', count: 2 },
-      { label: '待服务', count: 1 },
-      { label: '待评价', count: 3 },
-      { label: '退款/售后', count: 0 }
-    ]
-  }
+interface MenuItem {
+  id: string;
+  title: string;
+  icon: React.ReactNode;
+  color: string;
+}
 
-  componentDidMount () {
-    console.log('Profile page mounted')
-  }
+const Profile = () => {
+  const [isLogin] = useState(true); // TODO: 从状态管理或 API 获取登录状态
 
-  handleLogin = () => {
-    console.log('跳转到登录页面')
-    // TODO: 实现登录逻辑
-  }
+  // 菜单项配置
+  const menuItems: MenuItem[] = [
+    { id: "collections", title: "我的收藏", icon: <Heart size={20} />, color: "#FF6B6B" },
+    { id: "comments", title: "我的评论", icon: <Comment size={20} />, color: "#4ECDC4" },
+    { id: "addresses", title: "地址管理", icon: <Location size={20} />, color: "#45B7D1" },
+    { id: "feedback", title: "意见反馈", icon: <Feedback size={20} />, color: "#FFA502" },
+    { id: "settings", title: "设置中心", icon: <Setting size={20} />, color: "#8B5CF6" },
+    { id: "service", title: "联系客服", icon: <Phone size={20} />, color: "#FF8A65" },
+  ];
 
-  handleMenuClick = (type: string) => {
-    console.log('菜单点击:', type)
-    // TODO: 实现各菜单功能
-  }
+  const handleMenuClick = (menuId: string) => {
+    console.log("点击菜单:", menuId);
+    // TODO: 实现各菜单项的跳转逻辑
+  };
 
-  render () {
-    const { userInfo, stats } = this.state
+  const handleBecomeMaster = () => {
+    console.log("成为师傅");
+    // TODO: 跳转到成为师傅页面
+  };
 
-    return (
-      <View className='profile'>
-        {/* 用户信息区域 */}
-        <View className='profile-header'>
-          <View className='user-info'>
-            <Avatar size='large' src={userInfo.avatar}>
-              {userInfo.name.charAt(0)}
-            </Avatar>
-            <View className='user-details'>
-              <Text className='user-name'>{userInfo.name}</Text>
-              <Text className='user-phone'>{userInfo.phone}</Text>
+  const handleLogin = () => {
+    console.log("跳转到登录");
+    // TODO: 跳转到登录页面
+  };
+
+  return (
+    <View className="profile-page">
+      {/* 用户信息头部 */}
+      <View className="profile-header">
+        {isLogin ? (
+          <View className="user-info">
+            <View className="user-left">
+              <Image
+                src="https://via.placeholder.com/60/d81e06/ffffff?text=用户"
+                className="user-avatar"
+                mode="scaleToFill"
+              />
+              <View className="user-details">
+                <View className="user-name">用户昵称</View>
+                <View className="user-phone">18888888888</View>
+              </View>
             </View>
+            <View className="user-right">
+              <Button
+                type="primary"
+                size="small"
+                className="become-master-btn"
+                onClick={handleBecomeMaster}
+              >
+                成为师傅
+              </Button>
+            </View>
+          </View>
+        ) : (
+          <View className="login-prompt">
+            <View className="prompt-text">登录后享受更多功能</View>
             <Button
-              size='small'
-              type='primary'
-              fill='outline'
-              onClick={this.handleLogin}
+              type="primary"
+              size="small"
+              className="login-btn"
+              onClick={handleLogin}
             >
-              登录/注册
+              立即登录
             </Button>
           </View>
-        </View>
-
-        {/* 订单统计 */}
-        <View className='order-stats'>
-          <Text className='stats-title'>我的订单</Text>
-          <View className='stats-grid'>
-            {stats.map((stat, index) => (
-              <View key={index} className='stat-item'>
-                <Text className='stat-count'>{stat.count}</Text>
-                <Text className='stat-label'>{stat.label}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* 功能菜单 */}
-        <View className='menu-section'>
-          <CellGroup>
-            <Cell
-              title="我的收藏"
-              extra="查看全部"
-              onClick={() => this.handleMenuClick('favorites')}
-            />
-            <Cell
-              title="我的地址"
-              extra="管理地址"
-              onClick={() => this.handleMenuClick('address')}
-            />
-            <Cell
-              title="我的优惠券"
-              extra="3张可用"
-              onClick={() => this.handleMenuClick('coupons')}
-            />
-            <Cell
-              title="我的钱包"
-              extra="¥168.00"
-              onClick={() => this.handleMenuClick('wallet')}
-            />
-          </CellGroup>
-        </View>
-
-        <View className='menu-section'>
-          <CellGroup>
-            <Cell
-              title="客服中心"
-              onClick={() => this.handleMenuClick('service')}
-            />
-            <Cell
-              title="意见反馈"
-              onClick={() => this.handleMenuClick('feedback')}
-            />
-            <Cell
-              title="关于我们"
-              onClick={() => this.handleMenuClick('about')}
-            />
-            <Cell
-              title="设置"
-              onClick={() => this.handleMenuClick('settings')}
-            />
-          </CellGroup>
-        </View>
+        )}
       </View>
-    )
-  }
-}
+
+      {/* 菜单功能区域 */}
+      <View className="menu-section">
+        {menuItems.map((item) => (
+          <Cell
+            key={item.id}
+            title={item.title}
+            className="cell-item"
+            onClick={() => handleMenuClick(item.id)}
+          >
+            <View className="cell-left">
+              <View className="cell-icon" style={{ color: item.color }}>
+                {item.icon}
+              </View>
+              <View className="cell-title">{item.title}</View>
+            </View>
+            <View className="cell-right">
+              <ArrowRight size={16} color="#999" />
+            </View>
+          </Cell>
+        ))}
+      </View>
+
+      {/* 退出登录按钮 */}
+      {isLogin && (
+        <View className="logout-section">
+          <Button
+            block
+            size="large"
+            type="danger"
+            onClick={() => console.log("退出登录")}
+          >
+            退出登录
+          </Button>
+        </View>
+      )}
+    </View>
+  );
+};
+
+export default Profile;
