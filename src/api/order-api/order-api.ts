@@ -37,7 +37,7 @@ export const postOrderList = (
     
  ) => {
     return createTaroAxiosInstance<OrderListApiResults>(
-    {url: `http://api.zxjl.com/order/list`, method: 'POST'
+    {url: `/order/list`, method: 'POST'
     },
     );
   }
@@ -49,7 +49,7 @@ export const getPostOrderListMutationFetcher = ( ) => {
     return postOrderList();
   }
 }
-export const getPostOrderListMutationKey = () => [`http://api.zxjl.com/order/list`] as const;
+export const getPostOrderListMutationKey = () => [`/order/list`] as const;
 
 export type PostOrderListMutationResult = NonNullable<Awaited<ReturnType<typeof postOrderList>>>
 export type PostOrderListMutationError = unknown
@@ -80,7 +80,7 @@ export const postOrderPost = (
     postOrderParamter: PostOrderParamter,
  ) => {
     return createTaroAxiosInstance<ApiResult>(
-    {url: `http://api.zxjl.com/order/post`, method: 'POST',
+    {url: `/order/post`, method: 'POST',
       headers: {'Content-Type': 'application/json-patch+json', },
       data: postOrderParamter
     },
@@ -94,7 +94,7 @@ export const getPostOrderPostMutationFetcher = ( ) => {
     return postOrderPost(arg);
   }
 }
-export const getPostOrderPostMutationKey = () => [`http://api.zxjl.com/order/post`] as const;
+export const getPostOrderPostMutationKey = () => [`/order/post`] as const;
 
 export type PostOrderPostMutationResult = NonNullable<Awaited<ReturnType<typeof postOrderPost>>>
 export type PostOrderPostMutationError = unknown
@@ -125,14 +125,14 @@ export const getOrderCancelReasons = (
     
  ) => {
     return createTaroAxiosInstance<StringListApiResults>(
-    {url: `http://api.zxjl.com/order/cancel/reasons`, method: 'GET'
+    {url: `/order/cancel/reasons`, method: 'GET'
     },
     );
   }
 
 
 
-export const getGetOrderCancelReasonsKey = () => [`http://api.zxjl.com/order/cancel/reasons`] as const;
+export const getGetOrderCancelReasonsKey = () => [`/order/cancel/reasons`] as const;
 
 export type GetOrderCancelReasonsQueryResult = NonNullable<Awaited<ReturnType<typeof getOrderCancelReasons>>>
 export type GetOrderCancelReasonsQueryError = unknown
@@ -163,7 +163,7 @@ export const postOrderCancel = (
     cancelOrderParamter: CancelOrderParamter,
  ) => {
     return createTaroAxiosInstance<ApiResult>(
-    {url: `http://api.zxjl.com/order/cancel`, method: 'POST',
+    {url: `/order/cancel`, method: 'POST',
       headers: {'Content-Type': 'application/json-patch+json', },
       data: cancelOrderParamter
     },
@@ -177,7 +177,7 @@ export const getPostOrderCancelMutationFetcher = ( ) => {
     return postOrderCancel(arg);
   }
 }
-export const getPostOrderCancelMutationKey = () => [`http://api.zxjl.com/order/cancel`] as const;
+export const getPostOrderCancelMutationKey = () => [`/order/cancel`] as const;
 
 export type PostOrderCancelMutationResult = NonNullable<Awaited<ReturnType<typeof postOrderCancel>>>
 export type PostOrderCancelMutationError = unknown

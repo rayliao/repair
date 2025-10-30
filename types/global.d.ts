@@ -1,5 +1,8 @@
 /// <reference types="@tarojs/taro" />
 
+// 全局常量声明
+declare const HOST: string;
+
 declare module '*.png';
 declare module '*.gif';
 declare module '*.jpg';

@@ -10,7 +10,7 @@ module.exports = {
       schemas: './src/api/model',
       client: 'swr',
       httpClient: 'axios',
-      baseUrl: 'http://api.zxjl.com',
+      baseUrl: '',
       override: {
         mutator: {
           path: './src/utils/taroAxios.ts',

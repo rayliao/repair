@@ -28,8 +28,14 @@ function convertAxiosToTaroConfig(axiosConfig: TaroRequestConfig) {
     ...rest
   } = axiosConfig
 
-  // 处理查询参数
+  // 处理 URL - 如果是相对路径，添加 HOST
   let finalUrl = url || ''
+  if (finalUrl.startsWith('/')) {
+    // @ts-ignore - HOST 是通过 defineConstants 注入的全局变量
+    finalUrl = `${HOST}${finalUrl}`
+  }
+
+  // 处理查询参数
   if (params && Object.keys(params).length > 0) {
     const queryString = new URLSearchParams(params).toString()
     finalUrl = `${finalUrl}${finalUrl.includes('?') ? '&' : '?'}${queryString}`

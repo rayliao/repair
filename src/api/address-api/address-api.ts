@@ -35,7 +35,7 @@ export const postAddressList = (
     
  ) => {
     return createTaroAxiosInstance<AddressListApiResults>(
-    {url: `http://api.zxjl.com/address/list`, method: 'POST'
+    {url: `/address/list`, method: 'POST'
     },
     );
   }
@@ -47,7 +47,7 @@ export const getPostAddressListMutationFetcher = ( ) => {
     return postAddressList();
   }
 }
-export const getPostAddressListMutationKey = () => [`http://api.zxjl.com/address/list`] as const;
+export const getPostAddressListMutationKey = () => [`/address/list`] as const;
 
 export type PostAddressListMutationResult = NonNullable<Awaited<ReturnType<typeof postAddressList>>>
 export type PostAddressListMutationError = unknown
@@ -78,7 +78,7 @@ export const postAddressAdd = (
     addAddressDto: AddAddressDto,
  ) => {
     return createTaroAxiosInstance<ApiResult>(
-    {url: `http://api.zxjl.com/address/add`, method: 'POST',
+    {url: `/address/add`, method: 'POST',
       headers: {'Content-Type': 'application/json-patch+json', },
       data: addAddressDto
     },
@@ -92,7 +92,7 @@ export const getPostAddressAddMutationFetcher = ( ) => {
     return postAddressAdd(arg);
   }
 }
-export const getPostAddressAddMutationKey = () => [`http://api.zxjl.com/address/add`] as const;
+export const getPostAddressAddMutationKey = () => [`/address/add`] as const;
 
 export type PostAddressAddMutationResult = NonNullable<Awaited<ReturnType<typeof postAddressAdd>>>
 export type PostAddressAddMutationError = unknown
@@ -123,7 +123,7 @@ export const postAddressEdit = (
     editAddressDto: EditAddressDto,
  ) => {
     return createTaroAxiosInstance<ApiResult>(
-    {url: `http://api.zxjl.com/address/edit`, method: 'POST',
+    {url: `/address/edit`, method: 'POST',
       headers: {'Content-Type': 'application/json-patch+json', },
       data: editAddressDto
     },
@@ -137,7 +137,7 @@ export const getPostAddressEditMutationFetcher = ( ) => {
     return postAddressEdit(arg);
   }
 }
-export const getPostAddressEditMutationKey = () => [`http://api.zxjl.com/address/edit`] as const;
+export const getPostAddressEditMutationKey = () => [`/address/edit`] as const;
 
 export type PostAddressEditMutationResult = NonNullable<Awaited<ReturnType<typeof postAddressEdit>>>
 export type PostAddressEditMutationError = unknown
@@ -168,7 +168,7 @@ export const postAddressDelete = (
     addressIdDto: AddressIdDto,
  ) => {
     return createTaroAxiosInstance<ApiResult>(
-    {url: `http://api.zxjl.com/address/delete`, method: 'POST',
+    {url: `/address/delete`, method: 'POST',
       headers: {'Content-Type': 'application/json-patch+json', },
       data: addressIdDto
     },
@@ -182,7 +182,7 @@ export const getPostAddressDeleteMutationFetcher = ( ) => {
     return postAddressDelete(arg);
   }
 }
-export const getPostAddressDeleteMutationKey = () => [`http://api.zxjl.com/address/delete`] as const;
+export const getPostAddressDeleteMutationKey = () => [`/address/delete`] as const;
 
 export type PostAddressDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof postAddressDelete>>>
 export type PostAddressDeleteMutationError = unknown
@@ -213,7 +213,7 @@ export const postAddressSetDefault = (
     addressIdDto: AddressIdDto,
  ) => {
     return createTaroAxiosInstance<ApiResult>(
-    {url: `http://api.zxjl.com/address/set/default`, method: 'POST',
+    {url: `/address/set/default`, method: 'POST',
       headers: {'Content-Type': 'application/json-patch+json', },
       data: addressIdDto
     },
@@ -227,7 +227,7 @@ export const getPostAddressSetDefaultMutationFetcher = ( ) => {
     return postAddressSetDefault(arg);
   }
 }
-export const getPostAddressSetDefaultMutationKey = () => [`http://api.zxjl.com/address/set/default`] as const;
+export const getPostAddressSetDefaultMutationKey = () => [`/address/set/default`] as const;
 
 export type PostAddressSetDefaultMutationResult = NonNullable<Awaited<ReturnType<typeof postAddressSetDefault>>>
 export type PostAddressSetDefaultMutationError = unknown
