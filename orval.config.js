@@ -1,7 +1,7 @@
 module.exports = {
   api: {
     input: {
-      target: 'http://106.55.142.137/swagger/v1/swagger.json',
+      target: 'http://api.zxjl.com/swagger/v1/swagger.json',
       validation: false
     },
     output: {
@@ -10,7 +10,7 @@ module.exports = {
       schemas: './src/api/model',
       client: 'swr',
       httpClient: 'axios',
-      baseUrl: 'http://106.55.142.137',
+      baseUrl: 'http://api.zxjl',
       override: {
         mutator: {
           path: './src/utils/taroAxios.ts',

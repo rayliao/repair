@@ -5,7 +5,25 @@
  * OpenAPI spec version: v1
  */
 
+export * from './addAddressDto';
+export * from './address';
+export * from './addressIdDto';
+export * from './addressListApiResults';
+export * from './apiResult';
+export * from './cancelOrderParamter';
+export * from './editAddressDto';
+export * from './getServicesDetailsParams';
+export * from './order';
+export * from './orderListApiResults';
+export * from './orderOrderState';
+export * from './orderPayState';
+export * from './postOrderParamter';
+export * from './servicesDetail';
+export * from './servicesDetailApiResults';
+export * from './servicesSpecificationItem';
+export * from './stringListApiResults';
 export * from './webInfo';
 export * from './webServiceItemDto';
 export * from './webServiceTypeDto';
+export * from './webServiceTypeDtoListApiResults';
 export * from './webServicesSubDto';

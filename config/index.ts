@@ -34,6 +34,15 @@ export default defineConfig<"vite">(async (merge) => {
       optimizeDeps: {
         exclude: ["@nutui/nutui-react-taro", "@nutui/icons-react-taro"],
       },
+      css: {
+        preprocessorOptions: {
+          scss: {
+            // 全局导入 NutUI 变量文件，所有 scss 文件都能使用
+            additionalData:
+              '@import "@nutui/nutui-react-taro/dist/styles/variables.scss";',
+          },
+        },
+      },
     },
     cache: {
       enable: false, // 根据官方建议关闭 cache
