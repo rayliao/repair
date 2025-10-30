@@ -17,8 +17,8 @@ import {
   useGetApiCityList,
 } from "../../api/web-api/web-api";
 import logo from "../../images/logo.png";
-
 import "./index.scss";
+import { host } from "../../utils/config";
 
 function Index() {
   const [searchText, setSearchText] = useState("");
@@ -133,9 +133,8 @@ function Index() {
     banners && banners.length > 0 ? (
       <View className="banner-section">
         <NutSwiper
-          autoPlay
-          interval={3000}
           indicator
+          interval={3000}
           indicatorColor="#f0f0f0"
           indicatorActiveColor="#fa2c19"
           height="200"
@@ -143,10 +142,7 @@ function Index() {
           {banners.map((bannerUrl: string, index: number) => (
             <NutSwiperItem key={index}>
               <View className="banner-item">
-                <Image
-                  src={`http://106.55.142.137${bannerUrl}`}
-                  mode="scaleToFill"
-                />
+                <Image src={`${host}${bannerUrl}`} />
               </View>
             </NutSwiperItem>
           ))}
@@ -157,14 +153,13 @@ function Index() {
   return (
     <View className="index-page">
       {/* 自定义头部 - 内联 Header 组件 */}
-      <View className="header-container" style={{ paddingTop: `${statusBarHeight}px` }}>
+      <View
+        className="header-container"
+        style={{ paddingTop: `${statusBarHeight}px` }}
+      >
         {/* 标题行 */}
         <View className="header-title-row">
-          <Image
-            src={logo}
-            className="header-logo"
-            mode="scaleToFill"
-          />
+          <Image src={logo} className="header-logo" mode="scaleToFill" />
           <View className="header-title">关师傅维修</View>
         </View>
 
@@ -182,7 +177,10 @@ function Index() {
               maxLength={50}
               clearable
               leftIn={
-                <View className="city-selector" onClick={() => setElevatorVisible(true)}>
+                <View
+                  className="city-selector"
+                  onClick={() => setElevatorVisible(true)}
+                >
                   <View className="city-text">{selectedCity}</View>
                   <View className="city-icon">▼</View>
                 </View>
@@ -230,7 +228,7 @@ function Index() {
               // 拼接图片地址
               const imageUrl =
                 service.icon || service.logo
-                  ? `http://106.55.142.137${service.icon || service.logo}`
+                  ? `${host}${service.icon || service.logo}`
                   : null;
 
               return (

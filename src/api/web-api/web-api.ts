@@ -29,14 +29,14 @@ export const getApiWebInfo = (
     
  ) => {
     return createTaroAxiosInstance<WebInfo>(
-    {url: `http://api.zxjl/api/web/info`, method: 'GET'
+    {url: `http://api.zxjl.com/api/web/info`, method: 'GET'
     },
     );
   }
 
 
 
-export const getGetApiWebInfoKey = () => [`http://api.zxjl/api/web/info`] as const;
+export const getGetApiWebInfoKey = () => [`http://api.zxjl.com/api/web/info`] as const;
 
 export type GetApiWebInfoQueryResult = NonNullable<Awaited<ReturnType<typeof getApiWebInfo>>>
 export type GetApiWebInfoQueryError = unknown
@@ -67,14 +67,14 @@ export const getApiCityList = (
     
  ) => {
     return createTaroAxiosInstance<WebServiceTypeDto[]>(
-    {url: `http://api.zxjl/api/city/list`, method: 'GET'
+    {url: `http://api.zxjl.com/api/city/list`, method: 'GET'
     },
     );
   }
 
 
 
-export const getGetApiCityListKey = () => [`http://api.zxjl/api/city/list`] as const;
+export const getGetApiCityListKey = () => [`http://api.zxjl.com/api/city/list`] as const;
 
 export type GetApiCityListQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCityList>>>
 export type GetApiCityListQueryError = unknown
@@ -105,14 +105,14 @@ export const getApiServicesList = (
     
  ) => {
     return createTaroAxiosInstance<WebServiceTypeDtoListApiResults>(
-    {url: `http://api.zxjl/api/services/list`, method: 'GET'
+    {url: `http://api.zxjl.com/api/services/list`, method: 'GET'
     },
     );
   }
 
 
 
-export const getGetApiServicesListKey = () => [`http://api.zxjl/api/services/list`] as const;
+export const getGetApiServicesListKey = () => [`http://api.zxjl.com/api/services/list`] as const;
 
 export type GetApiServicesListQueryResult = NonNullable<Awaited<ReturnType<typeof getApiServicesList>>>
 export type GetApiServicesListQueryError = unknown

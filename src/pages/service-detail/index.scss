@@ -1,0 +1,461 @@
+.service-detail-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 80px; // 为底部浮层留出空间
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+
+    .loading-text {
+      font-size: 16px;
+      color: #999;
+    }
+  }
+
+  /* 图片轮播区域 */
+  .banner-section {
+    width: 100%;
+    height: 250px;
+    background: #fff;
+
+    .banner-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .banner-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f8f8;
+    }
+
+    :global(.nut-swiper) {
+      height: 250px;
+
+      :global(.nut-swiper-pagination) {
+        bottom: 12px;
+      }
+    }
+  }
+
+  /* 服务信息区域 */
+  .service-info {
+    background: #fff;
+    padding: 20px 16px;
+    margin-bottom: 10px;
+
+    .service-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+
+      .service-title {
+        flex: 1;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.4;
+        margin-right: 16px;
+      }
+
+      .service-price {
+        text-align: right;
+
+        .price-label {
+          font-size: 12px;
+          color: #999;
+          margin-bottom: 4px;
+        }
+
+        .price-value {
+          font-size: 16px;
+          color: #d81e06;
+          font-weight: 600;
+
+          .price-number {
+            font-size: 24px;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+    .service-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+
+      :global(.nut-tag) {
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 12px;
+      }
+
+      :global(.nut-tag--primary) {
+        background-color: rgba(216, 30, 6, 0.1);
+        color: #d81e06;
+        border-color: rgba(216, 30, 6, 0.2);
+      }
+
+      :global(.nut-tag--success) {
+        background-color: rgba(52, 199, 89, 0.1);
+        color: #34c759;
+        border-color: rgba(52, 199, 89, 0.2);
+      }
+    }
+
+    .service-desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+    }
+  }
+
+  /* Tab切换区域 */
+  .tabs-section {
+    background: #fff;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+
+    :global(.nut-tabs) {
+      background: #fff;
+
+      :global(.nut-tabs__titles) {
+        background: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        padding: 0 16px;
+      }
+
+      :global(.nut-tabs__titles-item) {
+        font-size: 15px;
+        font-weight: 500;
+        color: #666;
+        padding: 16px 0;
+
+        &:global(.active) {
+          color: #d81e06;
+          font-weight: 600;
+        }
+      }
+
+      :global(.nut-tabs__line) {
+        background-color: #d81e06;
+        height: 3px;
+        border-radius: 2px;
+      }
+    }
+
+    .tab-content {
+      padding: 20px 16px;
+      min-height: 300px;
+
+      .content-section {
+        margin-bottom: 24px;
+
+        .content-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 12px;
+          position: relative;
+          padding-left: 12px;
+
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 16px;
+            background: #d81e06;
+            border-radius: 2px;
+          }
+        }
+
+        .content-text {
+          font-size: 14px;
+          color: #666;
+          line-height: 1.8;
+          text-align: justify;
+        }
+
+        .process-list {
+          .process-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            position: relative;
+
+            &:not(:last-child)::after {
+              content: '';
+              position: absolute;
+              left: 18px;
+              bottom: -8px;
+              width: 2px;
+              height: 8px;
+              background: #e5e5e5;
+            }
+
+            .process-number {
+              width: 24px;
+              height: 24px;
+              border-radius: 50%;
+              background: #d81e06;
+              color: #fff;
+              font-size: 12px;
+              font-weight: 600;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-right: 12px;
+              flex-shrink: 0;
+            }
+
+            .process-text {
+              font-size: 14px;
+              color: #333;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+
+      /* 评价列表 */
+      .reviews-list {
+        .review-item {
+          background: #f8f9fa;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 12px;
+
+          .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+
+            .review-user {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+
+              .user-avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                flex-shrink: 0;
+              }
+
+              .user-info {
+                .username {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #333;
+                  margin-bottom: 2px;
+                }
+
+                .review-time {
+                  font-size: 12px;
+                  color: #999;
+                }
+              }
+            }
+
+            :global(.nut-rate) {
+              :global(.nut-rate-item) {
+                margin-right: 2px;
+              }
+            }
+          }
+
+          .review-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+          }
+
+          .review-images {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+
+            .review-image {
+              width: 60px;
+              height: 60px;
+              border-radius: 6px;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* 底部操作栏 */
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #f0f0f0;
+    padding: 12px 16px;
+    z-index: 100;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        background: transparent;
+        border: none;
+        color: #999;
+        min-width: 60px;
+        height: 48px;
+        padding: 0;
+
+        &:global(.nut-button--loading) {
+          background: transparent;
+        }
+
+        .btn-text {
+          font-size: 11px;
+          color: #666;
+        }
+
+        &.favorite-btn {
+          &.active {
+            .btn-text {
+              color: #d81e06;
+            }
+          }
+        }
+      }
+
+      .booking-btn {
+        flex: 1;
+        height: 48px;
+        background-color: #d81e06 !important;
+        border-color: #d81e06 !important;
+        border-radius: 24px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+
+        &:global(.nut-button--loading) {
+          background-color: #d81e06 !important;
+        }
+      }
+    }
+  }
+
+  /* 联系客服弹窗 */
+  .contact-popup {
+    :global(.nut-popup) {
+      border-radius: 12px 12px 0 0;
+    }
+
+    .popup-content {
+      padding: 20px 16px;
+
+      .popup-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 30px;
+          height: 2px;
+          background: #d81e06;
+          border-radius: 1px;
+        }
+      }
+
+      .contact-options {
+        :global(.nut-cell) {
+          padding: 16px 0;
+          border-bottom: 1px solid #f0f0f0;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          :global(.nut-cell__title) {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 4px;
+          }
+
+          :global(.nut-cell__description) {
+            font-size: 13px;
+            color: #999;
+          }
+
+          :global(.nut-cell__value) {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* 响应式设计 */
+@media (min-width: 600px) {
+  .service-detail-page {
+    max-width: 600px;
+    margin: 0 auto;
+
+    .service-info {
+      padding: 24px 20px;
+
+      .service-header {
+        .service-title {
+          font-size: 20px;
+        }
+      }
+    }
+
+    .tabs-section {
+      .tab-content {
+        padding: 24px 20px;
+      }
+    }
+
+    .bottom-bar {
+      max-width: 600px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}

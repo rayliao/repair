@@ -28,7 +28,7 @@ export const getServicesDetails = (
     params?: GetServicesDetailsParams,
  ) => {
     return createTaroAxiosInstance<ServicesDetailApiResults>(
-    {url: `http://api.zxjl/services/details`, method: 'GET',
+    {url: `http://api.zxjl.com/services/details`, method: 'GET',
         params
     },
     );
@@ -36,7 +36,7 @@ export const getServicesDetails = (
 
 
 
-export const getGetServicesDetailsKey = (params?: GetServicesDetailsParams,) => [`http://api.zxjl/services/details`, ...(params ? [params]: [])] as const;
+export const getGetServicesDetailsKey = (params?: GetServicesDetailsParams,) => [`http://api.zxjl.com/services/details`, ...(params ? [params]: [])] as const;
 
 export type GetServicesDetailsQueryResult = NonNullable<Awaited<ReturnType<typeof getServicesDetails>>>
 export type GetServicesDetailsQueryError = unknown
