@@ -124,8 +124,12 @@ function Index() {
 
   // 服务项点击
   const onServiceClick = (service: any) => {
-    console.log("点击服务:", service);
-    // TODO: 跳转到服务详情页
+    // 跳转到服务页面，传递服务id作为默认选中分类
+    Taro.navigateTo({
+      url: `/pages/service-list/index?category=${encodeURIComponent(
+        service.id || ""
+      )}`,
+    });
   };
 
   // 轮播图渲染
@@ -221,7 +225,9 @@ function Index() {
 
       {/* 服务列表 */}
       <View className="services-section">
-        <View className="section-title">热门服务</View>
+        <View className="section-header">
+          <View className="section-title">热门服务</View>
+        </View>
         {services.length > 0 ? (
           <Grid>
             {services.map((service: any, index: number) => {

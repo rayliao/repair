@@ -11,6 +11,7 @@ import type {
 } from 'swr';
 
 import type {
+  CosTokenResultApiResults,
   WebInfo,
   WebServiceTypeDto,
   WebServiceTypeDtoListApiResults
@@ -128,6 +129,44 @@ export const useGetApiServicesList = <TError = unknown>(
   const isEnabled = swrOptions?.enabled !== false
   const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetApiServicesListKey() : null);
   const swrFn = () => getApiServicesList()
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+/**
+ * @summary 获取腾讯云临时token
+ */
+export const getApiTencentToken = (
+    
+ ) => {
+    return createTaroAxiosInstance<CosTokenResultApiResults>(
+    {url: `/api/tencent/token`, method: 'GET'
+    },
+    );
+  }
+
+
+
+export const getGetApiTencentTokenKey = () => [`/api/tencent/token`] as const;
+
+export type GetApiTencentTokenQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTencentToken>>>
+export type GetApiTencentTokenQueryError = unknown
+
+/**
+ * @summary 获取腾讯云临时token
+ */
+export const useGetApiTencentToken = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getApiTencentToken>>, TError> & { swrKey?: Key, enabled?: boolean },  }
+) => {
+  const {swr: swrOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetApiTencentTokenKey() : null);
+  const swrFn = () => getApiTencentToken()
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
 

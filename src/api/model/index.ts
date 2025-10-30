@@ -11,6 +11,8 @@ export * from './addressIdDto';
 export * from './addressListApiResults';
 export * from './apiResult';
 export * from './cancelOrderParamter';
+export * from './cosTokenResult';
+export * from './cosTokenResultApiResults';
 export * from './editAddressDto';
 export * from './getServicesDetailsParams';
 export * from './order';

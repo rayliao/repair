@@ -7,6 +7,7 @@
 import type { WebServiceItemDto } from './webServiceItemDto';
 
 export interface WebServicesSubDto {
+  id?: number;
   /**
    * 子服务名称
    * @nullable
