@@ -13,6 +13,7 @@ import {
   ArrowRight,
 } from "@nutui/icons-react-taro";
 import { useState } from "react";
+import Taro from "@tarojs/taro";
 import "./index.scss";
 
 interface MenuItem {
@@ -37,7 +38,52 @@ const Profile = () => {
 
   const handleMenuClick = (menuId: string) => {
     console.log("点击菜单:", menuId);
-    // TODO: 实现各菜单项的跳转逻辑
+
+    switch (menuId) {
+      case "addresses":
+        // 跳转到地址管理页面
+        Taro.navigateTo({
+          url: "/pages/address-list/index"
+        });
+        break;
+      case "collections":
+        // TODO: 跳转到我的收藏页面
+        Taro.showToast({
+          title: "我的收藏功能开发中",
+          icon: "none"
+        });
+        break;
+      case "comments":
+        // TODO: 跳转到我的评论页面
+        Taro.showToast({
+          title: "我的评论功能开发中",
+          icon: "none"
+        });
+        break;
+      case "feedback":
+        // TODO: 跳转到意见反馈页面
+        Taro.showToast({
+          title: "意见反馈功能开发中",
+          icon: "none"
+        });
+        break;
+      case "settings":
+        // TODO: 跳转到设置中心页面
+        Taro.showToast({
+          title: "设置中心功能开发中",
+          icon: "none"
+        });
+        break;
+      case "service":
+        // TODO: 联系客服功能
+        Taro.showToast({
+          title: "联系客服功能开发中",
+          icon: "none"
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   const handleBecomeMaster = () => {
