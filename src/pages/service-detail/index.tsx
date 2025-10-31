@@ -21,6 +21,7 @@ import { useState, useMemo } from "react";
 import Taro from "@tarojs/taro";
 import { useGetServicesDetails } from "../../api/services-api/services-api";
 import "./index.scss";
+import { host } from "../../utils/config";
 
 const ServiceDetail = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -140,7 +141,7 @@ const ServiceDetail = () => {
             {bannerImages.map((image, index) => (
               <SwiperItem key={index}>
                 <Image
-                  src={image}
+                  src={`${host}${image}`}
                   className="banner-image"
                   mode="aspectFill"
                 />

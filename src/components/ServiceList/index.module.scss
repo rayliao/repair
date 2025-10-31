@@ -9,28 +9,6 @@
     background: #fff;
     padding: 10px 15px;
     border-bottom: 1px solid #f0f0f0;
-
-    :global(.nut-searchbar) {
-      background: #f8f8f8;
-      border-radius: 20px;
-      border: none;
-      padding: 0 15px;
-
-      :global(.nut-searchbar__content) {
-        background: transparent;
-        border: none;
-      }
-
-      :global(.nut-searchbar__input) {
-        background: transparent;
-        font-size: 14px;
-        color: #333;
-
-        &::placeholder {
-          color: #999;
-        }
-      }
-    }
   }
 
   /* 主要内容区域 */
