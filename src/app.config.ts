@@ -4,6 +4,7 @@ export default defineAppConfig({
     "pages/services/index",
     "pages/service-list/index",
     "pages/service-detail/index",
+    "pages/order-confirm/index",
     "pages/orders/index",
     "pages/profile/index",
   ],

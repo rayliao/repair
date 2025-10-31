@@ -83,11 +83,10 @@ const ServiceDetail = () => {
   };
 
   const handleBooking = () => {
-    Taro.showToast({
-      title: "跳转到预约页面",
-      icon: "success"
+    // 跳转到订单确认页面，传递服务ID
+    Taro.navigateTo({
+      url: `/pages/order-confirm/index?serviceId=${serviceId}`
     });
-    // TODO: 跳转到预约页面
   };
 
   const handleCall = () => {
