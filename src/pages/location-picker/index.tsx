@@ -105,7 +105,7 @@ const LocationPicker = () => {
 
         Taro.showToast({
           title: errorMessage,
-          icon: "error",
+          icon: "none",
           duration: 3000,
         });
 
@@ -213,7 +213,7 @@ const LocationPicker = () => {
     if (!selectedLocation) {
       Taro.showToast({
         title: "请选择一个位置",
-        icon: "error",
+        icon: "none",
       });
       return;
     }

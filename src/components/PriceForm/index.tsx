@@ -33,14 +33,12 @@ export default class PriceForm extends Component<PriceFormProps, any> {
 			const { Size, Phone } = e.detail.value
 			if (!Size) {
 				Taro.showToast({
-					icon: 'none',
 					title: '请输入您的房屋面积'
 				})
 				return
 			}
 			if (!Phone || Phone.length !== 11) {
 				Taro.showToast({
-					icon: 'none',
 					title: '请输入正确手机号码'
 				})
 				return
@@ -71,7 +69,6 @@ export default class PriceForm extends Component<PriceFormProps, any> {
 						closeModal && closeModal()
 					}
 					Taro.showToast({
-						icon: 'none',
 						title: res.message
 					})
 					doing = false

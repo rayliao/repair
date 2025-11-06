@@ -27,7 +27,6 @@ export const request = (options: any, cb: Function) => {
 						toLogin()
 					} else {
 						Taro.showToast({
-							icon: 'none',
 							title: res.data.message
 						})
 					}

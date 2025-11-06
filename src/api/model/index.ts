@@ -7,6 +7,7 @@
 
 export * from './addAddressDto';
 export * from './address';
+export * from './addressApiResults';
 export * from './addressIdDto';
 export * from './addressListApiResults';
 export * from './apiResult';
@@ -14,6 +15,7 @@ export * from './cancelOrderParamter';
 export * from './cosTokenResult';
 export * from './cosTokenResultApiResults';
 export * from './editAddressDto';
+export * from './getAddressInfoParams';
 export * from './getServicesDetailsParams';
 export * from './order';
 export * from './orderListApiResults';

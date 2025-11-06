@@ -46,7 +46,7 @@ const AddressList = () => {
       console.error("加载地址列表失败:", error);
       Taro.showToast({
         title: "加载失败",
-        icon: "error",
+        icon: "none",
       });
     } finally {
       setLoading(false);
@@ -79,14 +79,14 @@ const AddressList = () => {
       await deleteAddress.trigger({ id: address.id });
       Taro.showToast({
         title: "删除成功",
-        icon: "success",
+        icon: "none",
       });
       loadAddresses();
     } catch (error) {
       console.error("删除地址失败:", error);
       Taro.showToast({
         title: "删除失败",
-        icon: "error",
+        icon: "none",
       });
     }
   };
@@ -99,14 +99,14 @@ const AddressList = () => {
       await setDefaultAddress.trigger({ id: address.id });
       Taro.showToast({
         title: "设置成功",
-        icon: "success",
+        icon: "none",
       });
       loadAddresses();
     } catch (error) {
       console.error("设置默认地址失败:", error);
       Taro.showToast({
         title: "设置失败",
-        icon: "error",
+        icon: "none",
       });
     }
   };

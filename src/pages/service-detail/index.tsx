@@ -74,7 +74,7 @@ const ServiceDetail = () => {
     setIsFavorite(!isFavorite);
     Taro.showToast({
       title: isFavorite ? "已取消收藏" : "已收藏",
-      icon: "success"
+      icon: "none",
     });
   };
 
@@ -99,7 +99,7 @@ const ServiceDetail = () => {
   const handleOnlineService = () => {
     Taro.showToast({
       title: "跳转到在线客服",
-      icon: "success"
+      icon: "none",
     });
     setShowContact(false);
   };

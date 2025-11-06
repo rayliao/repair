@@ -112,7 +112,7 @@ const OrderConfirm = () => {
     if (!selectedContact) {
       Taro.showToast({
         title: "请选择联系信息",
-        icon: "error",
+        icon: "none",
       });
       return;
     }
@@ -130,7 +130,7 @@ const OrderConfirm = () => {
 
     Taro.showToast({
       title: "订单提交成功",
-      icon: "success",
+      icon: "none",
     });
 
     // TODO: 调用提交订单 API

@@ -119,7 +119,7 @@ function ServiceListComponent({
       } else {
         Taro.showToast({
           title: "服务信息异常",
-          icon: "error",
+          icon: "none",
         });
       }
     }

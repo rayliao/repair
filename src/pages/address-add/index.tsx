@@ -53,6 +53,7 @@ const AddressAdd = () => {
     if (!formData.street.trim()) {
       Taro.showToast({
         title: "请填写街道/小区",
+        icon: "none",
       });
       return;
     }
@@ -60,7 +61,7 @@ const AddressAdd = () => {
     if (!formData.unit.trim()) {
       Taro.showToast({
         title: "请填写楼号/门牌号",
-        icon: "error",
+        icon: "none",
       });
       return;
     }
@@ -68,7 +69,7 @@ const AddressAdd = () => {
     if (!formData.contact.trim()) {
       Taro.showToast({
         title: "请填写联系人",
-        icon: "error",
+        icon: "none",
       });
       return;
     }
@@ -76,7 +77,7 @@ const AddressAdd = () => {
     if (!formData.phone.trim()) {
       Taro.showToast({
         title: "请填写手机号",
-        icon: "error",
+        icon: "none",
       });
       return;
     }
@@ -86,7 +87,7 @@ const AddressAdd = () => {
     if (!phoneRegex.test(formData.phone)) {
       Taro.showToast({
         title: "请填写正确的手机号",
-        icon: "error",
+        icon: "none",
       });
       return;
     }
@@ -103,7 +104,7 @@ const AddressAdd = () => {
         await editAddress.trigger(editData);
         Taro.showToast({
           title: "修改成功",
-          icon: "success",
+          icon: "none",
         });
       } else {
         // 新增地址
@@ -111,7 +112,7 @@ const AddressAdd = () => {
         await addAddress.trigger(addData);
         Taro.showToast({
           title: "添加成功",
-          icon: "success",
+          icon: "none",
         });
       }
 
@@ -123,7 +124,7 @@ const AddressAdd = () => {
       console.error("保存地址失败:", error);
       Taro.showToast({
         title: isEdit ? "修改失败" : "添加失败",
-        icon: "error",
+        icon: "none",
       });
     } finally {
       setLoading(false);

@@ -4,9 +4,11 @@
  * 互帮Api
  * OpenAPI spec version: v1
  */
+import useSwr from 'swr';
 import type {
   Arguments,
-  Key
+  Key,
+  SWRConfiguration
 } from 'swr';
 
 import useSWRMutation from 'swr/mutation';
@@ -16,10 +18,12 @@ import type {
 
 import type {
   AddAddressDto,
+  AddressApiResults,
   AddressIdDto,
   AddressListApiResults,
   ApiResult,
-  EditAddressDto
+  EditAddressDto,
+  GetAddressInfoParams
 } from '.././model';
 
 import { createTaroAxiosInstance } from '../../utils/taroAxios';
@@ -65,6 +69,45 @@ export const usePostAddressList = <TError = unknown>(
   const swrFn = getPostAddressListMutationFetcher();
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+/**
+ * @summary 获取地址
+ */
+export const getAddressInfo = (
+    params?: GetAddressInfoParams,
+ ) => {
+    return createTaroAxiosInstance<AddressApiResults>(
+    {url: `/address/info`, method: 'GET',
+        params
+    },
+    );
+  }
+
+
+
+export const getGetAddressInfoKey = (params?: GetAddressInfoParams,) => [`/address/info`, ...(params ? [params]: [])] as const;
+
+export type GetAddressInfoQueryResult = NonNullable<Awaited<ReturnType<typeof getAddressInfo>>>
+export type GetAddressInfoQueryError = unknown
+
+/**
+ * @summary 获取地址
+ */
+export const useGetAddressInfo = <TError = unknown>(
+  params?: GetAddressInfoParams, options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAddressInfo>>, TError> & { swrKey?: Key, enabled?: boolean },  }
+) => {
+  const {swr: swrOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAddressInfoKey(params) : null);
+  const swrFn = () => getAddressInfo(params)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
 
   return {
     swrKey,

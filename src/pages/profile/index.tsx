@@ -50,35 +50,35 @@ const Profile = () => {
         // TODO: 跳转到我的收藏页面
         Taro.showToast({
           title: "我的收藏功能开发中",
-          icon: "none"
+          icon: "none",
         });
         break;
       case "comments":
         // TODO: 跳转到我的评论页面
         Taro.showToast({
           title: "我的评论功能开发中",
-          icon: "none"
+          icon: "none",
         });
         break;
       case "feedback":
         // TODO: 跳转到意见反馈页面
         Taro.showToast({
           title: "意见反馈功能开发中",
-          icon: "none"
+          icon: "none",
         });
         break;
       case "settings":
         // TODO: 跳转到设置中心页面
         Taro.showToast({
           title: "设置中心功能开发中",
-          icon: "none"
+          icon: "none",
         });
         break;
       case "service":
         // TODO: 联系客服功能
         Taro.showToast({
           title: "联系客服功能开发中",
-          icon: "none"
+          icon: "none",
         });
         break;
       default:
