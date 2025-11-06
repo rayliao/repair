@@ -209,16 +209,4 @@
   }
 }
 
-/* 响应式设计 */
-@media (min-width: 600px) {
-  .orders-page {
-    .orders-list {
-      max-width: 600px;
-      margin: 15px auto;
 
-      .order-card-wrapper {
-        margin-bottom: 20px;
-      }
-    }
-  }
-}

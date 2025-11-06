@@ -430,32 +430,4 @@
   }
 }
 
-/* 响应式设计 */
-@media (min-width: 600px) {
-  .service-detail-page {
-    max-width: 600px;
-    margin: 0 auto;
 
-    .service-info {
-      padding: 24px 20px;
-
-      .service-header {
-        .service-title {
-          font-size: 20px;
-        }
-      }
-    }
-
-    .tabs-section {
-      .tab-content {
-        padding: 24px 20px;
-      }
-    }
-
-    .bottom-bar {
-      max-width: 600px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-}

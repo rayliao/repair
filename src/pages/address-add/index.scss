@@ -1,128 +1,27 @@
 .address-add-page {
-  min-height: 100vh;
+  height: 100vh;
   background: #f5f5f5;
   padding-bottom: 80px;
+  padding: 16px;
   box-sizing: border-box;
 
   .form-container {
     background: #fff;
-    margin: 16px;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-
-    :global(.nut-form) {
-      padding: 0;
-
-      :global(.nut-form-item) {
-        padding: 16px;
-        border-bottom: 1px solid #f0f0f0;
-
-        &:last-child {
-          border-bottom: none;
-        }
-
-        :global(.nut-form-item__label) {
-          font-size: 16px;
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 8px;
-          line-height: 1.2;
-        }
-
-        :global(.nut-form-item__body) {
-          margin: 0;
-        }
-      }
-    }
-
-    .location-cell {
-      border: none;
-      padding: 0;
-      background: transparent;
-
-      :global(.nut-cell__value) {
-        padding: 0;
-      }
-
-      .location-content {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 0;
-        cursor: pointer;
-        min-height: 40px;
-
-        .location-icon {
-          flex-shrink: 0;
-          margin-top: 1px; // 微调对齐
-        }
-
-        .location-text {
-          flex: 1;
-          font-size: 14px;
-          color: #333;
-          line-height: 1.4;
-
-          &:empty::before {
-            content: "请选择街道/小区位置";
-            color: #999;
-          }
-        }
-
-        .arrow-icon {
-          flex-shrink: 0;
-        }
-
-        &:active {
-          opacity: 0.7;
-        }
-      }
-    }
 
     .input-wrapper {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 0;
 
       .input-icon {
         flex-shrink: 0;
-        margin-top: 1px; // 微调对齐
       }
 
       .input-field {
         flex: 1;
-        border: none;
-        background: transparent;
-
-        :global(.nut-input) {
-          font-size: 14px;
-          color: #333;
-          line-height: 1.4;
-
-          &::placeholder {
-            color: #999;
-          }
-        }
-      }
-    }
-
-    :global(.nut-input) {
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 12px;
-      font-size: 14px;
-      background: #fff;
-      line-height: 1.4;
-
-      &:focus {
-        border-color: #d81e06;
-        box-shadow: 0 0 0 2px rgba(216, 30, 6, 0.1);
-      }
-
-      &::placeholder {
-        color: #a0aec0;
       }
     }
   }
@@ -136,66 +35,23 @@
     background: #fff;
     border-top: 1px solid #f0f0f0;
     z-index: 100;
-    display: flex;
-    gap: 12px;
-
-    .cancel-btn {
-      flex: 1;
-      height: 48px;
-      border: 1px solid #d0d7de;
-      border-radius: 6px;
-      background: #fff;
-      color: #656d76;
-      font-size: 16px;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-
-      &:active {
-        background: #f6f8fa;
-        transform: scale(0.98);
-      }
-    }
 
     .submit-btn {
-      flex: 2;
-      background: #d81e06;
-      border-radius: 6px;
-      padding: 12px 24px;
       height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-
-      .btn-text {
-        font-size: 16px;
-        color: #fff;
-        font-weight: 600;
-        line-height: 1;
-      }
-
-      &:active {
-        background: #c01a05;
-        transform: scale(0.98);
-      }
+      background: #d81e06;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
 
       &:disabled {
-        background: #cbd5e0;
+        background: #ccc;
         opacity: 0.6;
-        transform: none;
       }
 
-      :global(.nut-loading) {
+      .btn-text {
         color: #fff;
       }
     }
   }
-}
-
-// 全局样式
-page {
-  background: #f5f5f5;
 }

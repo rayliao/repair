@@ -248,19 +248,4 @@
   }
 }
 
-// 响应式适配
-@media (min-width: 768px) {
-  .location-picker-page {
-    .map-container {
-      .map {
-        min-height: 400px;
-      }
-    }
 
-    .places-list {
-      .places {
-        max-height: 400px;
-      }
-    }
-  }
-}

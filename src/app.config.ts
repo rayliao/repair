@@ -17,6 +17,12 @@ export default defineAppConfig({
     navigationBarTextStyle: "white",
     backgroundColor: "#f8f8f8",
   },
+  permission: {
+    "scope.userLocation": {
+      desc: "您的位置信息将用于地址选择和服务定位"
+    }
+  },
+  requiredPrivateInfos: ["getLocation"],
   tabBar: {
     color: "#666666",
     selectedColor: "#d81e06",

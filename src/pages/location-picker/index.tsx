@@ -35,6 +35,47 @@ const LocationPicker = () => {
   // 获取当前位置
   const getCurrentLocation = () => {
     setLoading(true);
+
+    // 先检查用户是否授权了位置权限
+    Taro.getSetting({
+      success: (res) => {
+        if (res.authSetting['scope.userLocation'] === false) {
+          // 用户拒绝过授权，需要引导用户打开设置
+          Taro.showModal({
+            title: '位置权限申请',
+            content: '需要获取您的位置信息以提供精确的地址选择服务，请在设置中开启位置权限',
+            confirmText: '去设置',
+            success: (modalRes) => {
+              if (modalRes.confirm) {
+                Taro.openSetting({
+                  success: (settingRes) => {
+                    if (settingRes.authSetting['scope.userLocation']) {
+                      // 用户开启了权限，重新获取位置
+                      getLocationData();
+                    } else {
+                      setLoading(false);
+                    }
+                  }
+                });
+              } else {
+                setLoading(false);
+              }
+            }
+          });
+        } else {
+          // 用户未拒绝过或已授权，直接获取位置
+          getLocationData();
+        }
+      },
+      fail: () => {
+        // 获取设置失败，直接尝试获取位置
+        getLocationData();
+      }
+    });
+  };
+
+  // 实际获取位置数据
+  const getLocationData = () => {
     Taro.getLocation({
       type: "gcj02",
       success: (res) => {
@@ -51,11 +92,33 @@ const LocationPicker = () => {
       },
       fail: (error) => {
         console.error("获取位置失败:", error);
+
+        // 根据错误类型提供不同的提示
+        let errorMessage = "获取位置失败";
+        if (error.errMsg?.includes("auth deny")) {
+          errorMessage = "位置权限被拒绝，请在设置中开启位置权限";
+        } else if (error.errMsg?.includes("timeout")) {
+          errorMessage = "获取位置超时，请检查网络连接";
+        } else if (error.errMsg?.includes("requiredPrivateInfos")) {
+          errorMessage = "应用配置错误，请联系开发者";
+        }
+
         Taro.showToast({
-          title: "获取位置失败",
+          title: errorMessage,
           icon: "error",
+          duration: 3000,
         });
-        setLoading(false);
+
+        // 提供默认位置（北京）
+        const defaultLocation: LocationInfo = {
+          latitude: 39.908691,
+          longitude: 116.397446,
+          address: "北京市",
+          name: "默认位置",
+        };
+        setCurrentLocation(defaultLocation);
+        setSelectedLocation(defaultLocation);
+        getNearbyPlaces(defaultLocation.latitude, defaultLocation.longitude);
       },
     });
   };

@@ -4,14 +4,13 @@ import {
   Form,
   FormItem,
   Input,
-  Cell,
   Loading,
 } from "@nutui/nutui-react-taro";
 import {
   Location,
-  ArrowRight,
   User,
   Phone,
+  Home,
 } from "@nutui/icons-react-taro";
 import { useState, useEffect } from "react";
 import Taro from "@tarojs/taro";
@@ -48,28 +47,12 @@ const AddressAdd = () => {
     }
   }, []);
 
-  // 选择街道/小区位置
-  const handleSelectLocation = () => {
-    Taro.navigateTo({
-      url: "/pages/location-picker/index",
-    }).then(() => {
-      // 监听页面返回事件
-      Taro.eventCenter.once("locationSelected", (location) => {
-        setFormData({
-          ...formData,
-          street: location.address,
-        });
-      });
-    });
-  };
-
   // 提交表单
   const handleSubmit = async () => {
     // 表单验证
     if (!formData.street.trim()) {
       Taro.showToast({
-        title: "请选择街道/小区",
-        icon: "error",
+        title: "请填写街道/小区",
       });
       return;
     }
@@ -151,38 +134,48 @@ const AddressAdd = () => {
     <View className="address-add-page">
       <View className="form-container">
         <Form>
-          {/* 街道/小区选择 */}
+          {/* 街道/小区输入 */}
           <FormItem label="街道/小区" required>
-            <Cell
-              className="location-cell"
-              onClick={handleSelectLocation}
-            >
-              <View className="location-content">
-                <Location size={16} color="#d81e06" />
-                <Text className="location-text">
-                  {formData.street || "请选择街道/小区位置"}
-                </Text>
-                <ArrowRight size={16} color="#999" />
+            <View className="input-wrapper">
+              <View className="input-icon">
+                <Location size={16} color="#666" />
               </View>
-            </Cell>
+              <Input
+                placeholder="请填写街道/小区地址"
+                value={formData.street}
+                onChange={(value) =>
+                  setFormData({ ...formData, street: value })
+                }
+                clearable
+                className="input-field"
+              />
+            </View>
           </FormItem>
 
           {/* 楼号/门牌号 */}
           <FormItem label="楼号/门牌号" required>
-            <Input
-              placeholder="请填写楼号/门牌号"
-              value={formData.unit}
-              onChange={(value) =>
-                setFormData({ ...formData, unit: value })
-              }
-              clearable
-            />
+            <View className="input-wrapper">
+              <View className="input-icon">
+                <Home size={16} color="#666" />
+              </View>
+              <Input
+                placeholder="请填写楼号/门牌号"
+                value={formData.unit}
+                onChange={(value) =>
+                  setFormData({ ...formData, unit: value })
+                }
+                clearable
+                className="input-field"
+              />
+            </View>
           </FormItem>
 
           {/* 联系人 */}
           <FormItem label="联系人" required>
             <View className="input-wrapper">
-              <User size={16} color="#999" />
+              <View className="input-icon">
+                <User size={16} color="#666" />
+              </View>
               <Input
                 placeholder="请填写联系人姓名"
                 value={formData.contact}
@@ -198,7 +191,9 @@ const AddressAdd = () => {
           {/* 手机号 */}
           <FormItem label="手机号" required>
             <View className="input-wrapper">
-              <Phone size={16} color="#999" />
+              <View className="input-icon">
+                <Phone size={16} color="#666" />
+              </View>
               <Input
                 placeholder="请填写联系人手机号"
                 value={formData.phone}
