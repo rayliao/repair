@@ -30,13 +30,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       min-height: 48px;
 
       .btn-text {
-        margin-left: 8px;
         font-size: 14px;
         color: #fff;
         line-height: 1;
+        margin-left: 2px;
       }
     }
   }
@@ -78,12 +79,14 @@
                 font-weight: 600;
                 color: #333;
                 line-height: 1.2;
+                margin-left: 4px;
               }
 
               .contact-phone {
                 font-size: 14px;
                 color: #666;
                 line-height: 1.2;
+                margin-left: 4px;
               }
             }
 
@@ -108,16 +111,12 @@
             align-items: flex-start;
             gap: 8px;
 
-            .address-icon {
-              margin-top: 2px; // 微调图标与文字对齐
-              flex-shrink: 0;
-            }
-
             .address-text {
               font-size: 14px;
               color: #666;
               line-height: 1.5;
               flex: 1;
+              margin-left: 4px;
             }
           }
         }
@@ -148,6 +147,12 @@
           cursor: pointer;
           transition: all 0.2s ease;
 
+          .btn-text {
+            font-size: 14px;
+            line-height: 1;
+            margin-left: 2px;
+          }
+
           &:hover {
             background: #f8f9fa;
           }
@@ -157,21 +162,33 @@
             transform: scale(0.98);
           }
 
-          &.primary {
-            background: #d81e06;
-            border-color: #d81e06;
-            color: #fff;
+          &.edit-btn {
+            color: #007bff;
+            border-color: #007bff;
 
             &:hover {
-              background: #c71a03;
+              background: #f0f8ff;
             }
 
             &:active {
-              background: #b01603;
+              background: #e6f3ff;
             }
           }
 
-          &.danger {
+          &.default-btn {
+            color: #28a745;
+            border-color: #28a745;
+
+            &:hover {
+              background: #f0fff4;
+            }
+
+            &:active {
+              background: #e6ffe6;
+            }
+          }
+
+          &.delete-btn {
             color: #dc3545;
             border-color: #dc3545;
 
@@ -182,15 +199,6 @@
             &:active {
               background: #ffe6e6;
             }
-          }
-
-          .action-icon {
-            flex-shrink: 0;
-          }
-
-          .action-text {
-            font-size: 14px;
-            line-height: 1;
           }
         }
       }
@@ -218,15 +226,12 @@
       gap: 8px;
       transition: all 0.2s ease;
 
-      .btn-icon {
-        flex-shrink: 0;
-      }
-
       .btn-text {
         font-size: 16px;
         color: #fff;
         font-weight: 600;
         line-height: 1;
+        margin-left: 2px;
       }
 
       &:active {

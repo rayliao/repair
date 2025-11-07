@@ -1,7 +1,6 @@
 import { View, Text } from "@tarojs/components";
 import {
   Button,
-  Empty,
   Tag,
   Loading,
 } from "@nutui/nutui-react-taro";
@@ -23,6 +22,7 @@ import {
   usePostAddressSetDefault,
 } from "../../api/address-api/address-api";
 import type { Address } from "../../api/model/address";
+import Empty from "../../components/Empty";
 import "./index.scss";
 
 const AddressList = () => {
@@ -56,6 +56,11 @@ const AddressList = () => {
   useEffect(() => {
     loadAddresses();
   }, []);
+
+  // 使用 Taro 的 onShow 生命周期
+  Taro.useDidShow(() => {
+    loadAddresses();
+  });
 
   // 新增地址
   const handleAddAddress = () => {
