@@ -36,10 +36,10 @@
       background: #f8f8f8;
     }
 
-    :global(.nut-swiper) {
+    .nut-swiper {
       height: 250px;
 
-      :global(.nut-swiper-pagination) {
+      .nut-swiper-pagination {
         bottom: 12px;
       }
     }
@@ -94,19 +94,19 @@
       margin-bottom: 16px;
       flex-wrap: wrap;
 
-      :global(.nut-tag) {
+      .nut-tag {
         font-size: 11px;
         padding: 4px 8px;
         border-radius: 12px;
       }
 
-      :global(.nut-tag--primary) {
+      .nut-tag--primary {
         background-color: rgba(216, 30, 6, 0.1);
         color: #d81e06;
         border-color: rgba(216, 30, 6, 0.2);
       }
 
-      :global(.nut-tag--success) {
+      .nut-tag--success {
         background-color: rgba(52, 199, 89, 0.1);
         color: #34c759;
         border-color: rgba(52, 199, 89, 0.2);

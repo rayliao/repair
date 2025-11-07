@@ -5,36 +5,35 @@ import {
   FormItem,
   Input,
   Loading,
+  TextArea,
 } from "@nutui/nutui-react-taro";
-import {
-  Location,
-  User,
-  Phone,
-  Home,
-} from "@nutui/icons-react-taro";
 import { useState, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import {
   usePostAddressAdd,
   usePostAddressEdit,
+  useGetAddressInfo,
 } from "../../api/address-api/address-api";
 import type { AddAddressDto, EditAddressDto } from "../../api/model";
 import "./index.scss";
 
 const AddressAdd = () => {
-  const [formData, setFormData] = useState({
-    street: "",
-    unit: "",
-    contact: "",
-    phone: "",
-  });
   const [isEdit, setIsEdit] = useState(false);
   const [addressId, setAddressId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // 使用 Form.useForm 管理表单
+  const [form] = Form.useForm();
+
   // API hooks
   const addAddress = usePostAddressAdd();
   const editAddress = usePostAddressEdit();
+
+  // 获取地址详情
+  const { data: addressInfo } = useGetAddressInfo(
+    addressId ? { id: addressId } : undefined,
+    { swr: { enabled: !!addressId } }
+  );
 
   useEffect(() => {
     // 获取路由参数
@@ -42,171 +41,170 @@ const AddressAdd = () => {
     if (params?.mode === "edit" && params?.id) {
       setIsEdit(true);
       setAddressId(Number(params.id));
-      // 这里可以加载地址详情进行编辑
-      // TODO: 加载地址详情
     }
   }, []);
 
+  // 填充编辑表单数据
+  useEffect(() => {
+    if (addressInfo?.data) {
+      const formValues = {
+        street: addressInfo.data.street || "",
+        unit: addressInfo.data.unit || "",
+        contact: addressInfo.data.contact || "",
+        phone: addressInfo.data.phone || "",
+      };
+      // 使用 form.setFieldsValue 设置表单值
+      form.setFieldsValue(formValues);
+    }
+  }, [addressInfo, form]);
+
   // 提交表单
   const handleSubmit = async () => {
-    // 表单验证
-    if (!formData.street.trim()) {
-      Taro.showToast({
-        title: "请填写街道/小区",
-        icon: "none",
-      });
-      return;
-    }
-
-    if (!formData.unit.trim()) {
-      Taro.showToast({
-        title: "请填写楼号/门牌号",
-        icon: "none",
-      });
-      return;
-    }
-
-    if (!formData.contact.trim()) {
-      Taro.showToast({
-        title: "请填写联系人",
-        icon: "none",
-      });
-      return;
-    }
-
-    if (!formData.phone.trim()) {
-      Taro.showToast({
-        title: "请填写手机号",
-        icon: "none",
-      });
-      return;
-    }
-
-    // 手机号验证
-    const phoneRegex = /^1[3-9]\d{9}$/;
-    if (!phoneRegex.test(formData.phone)) {
-      Taro.showToast({
-        title: "请填写正确的手机号",
-        icon: "none",
-      });
-      return;
-    }
-
     try {
+      // 验证表单
+      const validationResult = await form.validateFields();
+
+      // 如果有验证错误，显示第一个错误信息
+      if (validationResult && validationResult.length > 0) {
+        const firstError = validationResult[0];
+        Taro.showToast({
+          title: firstError.message || "表单验证失败",
+          icon: "none",
+        });
+        return;
+      }
+
+      // 验证通过，获取表单的所有值
+      const values = form.getFieldsValue(true);
+      console.log("表单验证成功:", values);
+
       setLoading(true);
 
+      let result;
       if (isEdit && addressId) {
         // 编辑地址
         const editData: EditAddressDto = {
-          ...formData,
+          ...values,
           id: addressId,
         };
-        await editAddress.trigger(editData);
+        result = await editAddress.trigger(editData);
+        // 判断接口返回结果
+        if (result?.code === 0) {
+          // 返回上一页
+          setTimeout(() => {
+            Taro.navigateBack();
+          }, 1500);
+        }
         Taro.showToast({
-          title: "修改成功",
+          title: result?.message,
           icon: "none",
         });
       } else {
         // 新增地址
-        const addData: AddAddressDto = formData;
-        await addAddress.trigger(addData);
+        const addData: AddAddressDto = values;
+        result = await addAddress.trigger(addData);
+        // 判断接口返回结果
+        if (result?.code === 0) {
+          // 返回上一页
+          setTimeout(() => {
+            Taro.navigateBack();
+          }, 1500);
+        }
         Taro.showToast({
-          title: "添加成功",
+          title: result?.message,
           icon: "none",
         });
       }
-
-      // 返回上一页
-      setTimeout(() => {
-        Taro.navigateBack();
-      }, 1500);
-    } catch (error) {
+    } catch (error: any) {
       console.error("保存地址失败:", error);
+
+      // 显示具体的错误信息
+      const errorMessage =
+        error?.message ||
+        error?.data?.message ||
+        (isEdit ? "修改失败" : "添加失败");
       Taro.showToast({
-        title: isEdit ? "修改失败" : "添加失败",
+        title: errorMessage,
         icon: "none",
       });
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <View className="address-add-page">
       <View className="form-container">
-        <Form>
+        <Form form={form}>
           {/* 街道/小区输入 */}
-          <FormItem label="街道/小区" required>
-            <View className="input-wrapper">
-              <View className="input-icon">
-                <Location size={16} color="#666" />
-              </View>
-              <Input
-                placeholder="请填写街道/小区地址"
-                value={formData.street}
-                onChange={(value) =>
-                  setFormData({ ...formData, street: value })
-                }
-                clearable
-                className="input-field"
-              />
-            </View>
+          <FormItem
+            label="街道/小区"
+            name="street"
+            required
+            rules={[
+              { required: true, message: "请填写街道/小区地址" },
+              { max: 200, message: "地址不能超过200个字符" },
+            ]}
+          >
+            <TextArea
+              placeholder="请填写街道/小区地址"
+              className="textarea-field"
+              rows={3}
+              maxLength={200}
+              showCount
+            />
           </FormItem>
 
           {/* 楼号/门牌号 */}
-          <FormItem label="楼号/门牌号" required>
-            <View className="input-wrapper">
-              <View className="input-icon">
-                <Home size={16} color="#666" />
-              </View>
-              <Input
-                placeholder="请填写楼号/门牌号"
-                value={formData.unit}
-                onChange={(value) =>
-                  setFormData({ ...formData, unit: value })
-                }
-                clearable
-                className="input-field"
-              />
-            </View>
+          <FormItem
+            label="楼号/门牌号"
+            name="unit"
+            required
+            rules={[
+              { required: true, message: "请填写楼号/门牌号" },
+              { max: 50, message: "楼号/门牌号不能超过50个字符" },
+            ]}
+          >
+            <Input
+              placeholder="请填写楼号/门牌号"
+              clearable
+              className="input-field"
+            />
           </FormItem>
 
           {/* 联系人 */}
-          <FormItem label="联系人" required>
-            <View className="input-wrapper">
-              <View className="input-icon">
-                <User size={16} color="#666" />
-              </View>
-              <Input
-                placeholder="请填写联系人姓名"
-                value={formData.contact}
-                onChange={(value) =>
-                  setFormData({ ...formData, contact: value })
-                }
-                clearable
-                className="input-field"
-              />
-            </View>
+          <FormItem
+            label="联系人"
+            name="contact"
+            required
+            rules={[
+              { required: true, message: "请填写联系人姓名" },
+              { max: 20, message: "联系人姓名不能超过20个字符" },
+            ]}
+          >
+            <Input
+              placeholder="请填写联系人姓名"
+              clearable
+              className="input-field"
+            />
           </FormItem>
 
           {/* 手机号 */}
-          <FormItem label="手机号" required>
-            <View className="input-wrapper">
-              <View className="input-icon">
-                <Phone size={16} color="#666" />
-              </View>
-              <Input
-                placeholder="请填写联系人手机号"
-                value={formData.phone}
-                type="tel"
-                maxLength={11}
-                onChange={(value) =>
-                  setFormData({ ...formData, phone: value })
-                }
-                clearable
-                className="input-field"
-              />
-            </View>
+          <FormItem
+            label="手机号"
+            name="phone"
+            required
+            rules={[
+              { required: true, message: "请填写手机号" },
+              { pattern: /^1[3-9]\d{9}$/, message: "请填写正确的手机号格式" },
+            ]}
+          >
+            <Input
+              placeholder="请填写联系人手机号"
+              type="tel"
+              maxLength={11}
+              clearable
+              className="input-field"
+            />
           </FormItem>
         </Form>
       </View>
@@ -224,9 +222,7 @@ const AddressAdd = () => {
           {loading ? (
             <Loading type="spinner" />
           ) : (
-            <Text className="btn-text">
-              {isEdit ? "保存修改" : "添加地址"}
-            </Text>
+            <Text className="btn-text">{isEdit ? "保存修改" : "添加地址"}</Text>
           )}
         </Button>
       </View>
