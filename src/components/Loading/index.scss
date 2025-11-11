@@ -1,0 +1,96 @@
+.custom-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  gap: 8px;
+
+  &.vertical {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &.horizontal {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .loading-icon {
+    &.small {
+      :global(.nut-loading) {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &.base {
+      :global(.nut-loading) {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &.large {
+      :global(.nut-loading) {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .loading-text {
+    color: #666;
+    line-height: 1.4;
+
+    &.small {
+      font-size: 12px;
+    }
+
+    &.base {
+      font-size: 14px;
+    }
+
+    &.large {
+      font-size: 16px;
+    }
+  }
+}
+
+// 全屏遮罩层样式
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .loading-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+  }
+
+  .custom-loading {
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    min-width: 120px;
+    min-height: 80px;
+
+    .loading-text {
+      color: #333;
+      font-weight: 500;
+    }
+  }
+}

@@ -5,18 +5,15 @@ import {
   TextArea,
   Popup,
   Tag,
-  Empty,
+  Cell,
+  Loading,
 } from "@nutui/nutui-react-taro";
-import {
-  ArrowRight,
-  Plus,
-  User,
-  Del,
-} from "@nutui/icons-react-taro";
+import { ArrowRight, Plus, User, Del } from "@nutui/icons-react-taro";
 import { useState, useMemo, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import { useGetServicesDetails } from "../../api/services-api/services-api";
 import "./index.scss";
+import CustomLoading from "../../components/Loading";
 
 const OrderConfirm = () => {
   const [quantity, setQuantity] = useState(1);
@@ -140,25 +137,15 @@ const OrderConfirm = () => {
     }, 1500);
   };
 
-  if (isLoading) {
+  if (isLoading || !serviceDetail?.data) {
     return (
       <View className="order-confirm-page">
-        <View className="loading-container">
-          <Empty description="加载中..." />
-        </View>
+        <CustomLoading />
       </View>
     );
   }
 
-  if (error || !serviceDetail?.data) {
-    return (
-      <View className="order-confirm-page">
-        <Empty description="服务信息加载失败" />
-      </View>
-    );
-  }
-
-  const service = serviceDetail.data;
+  const service = serviceDetail?.data;
 
   return (
     <View className="order-confirm">
@@ -166,18 +153,21 @@ const OrderConfirm = () => {
       <View className="section contact-section">
         <View className="section-title">联系信息</View>
         <View className="section-content">
-          <View className="contact-info" onClick={() => setShowContactPicker(true)}>
+          <View
+            className="contact-info"
+            onClick={() => setShowContactPicker(true)}
+          >
             {selectedContact ? (
               <View className="contact-left">
                 <View className="contact-name">
                   <User size={14} color="#333" />
                   <Text className="name">{selectedContact.name}</Text>
-                  {selectedContact.isDefault && (
-                    <Tag type="primary">默认</Tag>
-                  )}
+                  {selectedContact.isDefault && <Tag type="primary">默认</Tag>}
                 </View>
                 <View className="contact-phone">{selectedContact.phone}</View>
-                <View className="contact-address">{selectedContact.address}</View>
+                <View className="contact-address">
+                  {selectedContact.address}
+                </View>
               </View>
             ) : (
               <View className="contact-left">
@@ -255,11 +245,7 @@ const OrderConfirm = () => {
           <View className="image-list">
             {images.map((img, index) => (
               <View key={index} className="image-item">
-                <Image
-                  src={img}
-                  className="image"
-                  mode="aspectFill"
-                />
+                <Image src={img} className="image" mode="aspectFill" />
                 <View
                   className="remove-btn"
                   onClick={() => handleRemoveImage(index)}

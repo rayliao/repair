@@ -5,7 +5,6 @@ import {
   TabPane,
   Swiper,
   SwiperItem,
-  Tag,
   Cell,
   Rate,
   Empty,
@@ -17,6 +16,7 @@ import Taro from "@tarojs/taro";
 import { useGetServicesDetails } from "../../api/services-api/services-api";
 import "./index.scss";
 import { host } from "../../utils/config";
+import CustomLoading from "../../components/Loading";
 
 const ServiceDetail = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -114,9 +114,17 @@ const ServiceDetail = () => {
   };
 
   const handleBooking = () => {
-    // 跳转到订单确认页面，传递服务ID
+    // 跳转到订单确认页面，传递服务ID和选中的规格ID
+    const params = new URLSearchParams({
+      serviceId: serviceId.toString(),
+    });
+
+    if (selectedSpecId) {
+      params.append("specId", selectedSpecId.toString());
+    }
+
     Taro.navigateTo({
-      url: `/pages/order-confirm/index?serviceId=${serviceId}`,
+      url: `/pages/order-confirm/index?${params.toString()}`,
     });
   };
 
@@ -135,20 +143,10 @@ const ServiceDetail = () => {
     setShowContact(false);
   };
 
-  if (isLoading) {
+  if (isLoading || !serviceDetail?.data) {
     return (
       <View className="service-detail-page">
-        <View className="loading-container">
-          <View className="loading-text">加载中...</View>
-        </View>
-      </View>
-    );
-  }
-
-  if (error || !serviceDetail?.data) {
-    return (
-      <View className="service-detail-page">
-        <Empty description="服务详情加载失败" />
+        <CustomLoading />
       </View>
     );
   }
