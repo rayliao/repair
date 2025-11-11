@@ -11,12 +11,7 @@ import {
   Empty,
   Popup,
 } from "@nutui/nutui-react-taro";
-import {
-  HeartFill,
-  Heart,
-  Service,
-  Phone,
-} from "@nutui/icons-react-taro";
+import { HeartFill, Heart, Service, Phone } from "@nutui/icons-react-taro";
 import { useState, useMemo } from "react";
 import Taro from "@tarojs/taro";
 import { useGetServicesDetails } from "../../api/services-api/services-api";
@@ -27,20 +22,29 @@ const ServiceDetail = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showContact, setShowContact] = useState(false);
+  const [selectedSpecId, setSelectedSpecId] = useState<number | null>(null);
 
   // 从路由参数获取服务ID
   const params = Taro.getCurrentInstance().router?.params;
   const serviceId = parseInt(params?.id || "0");
 
   // 获取服务详情数据
-  const { data: serviceDetail, isLoading, error } = useGetServicesDetails({
-    id: serviceId
+  const {
+    data: serviceDetail,
+    isLoading,
+    error,
+  } = useGetServicesDetails({
+    id: serviceId,
   });
 
   // 处理轮播图数据
   const bannerImages = useMemo(() => {
-    if (!serviceDetail?.data?.banner || !Array.isArray(serviceDetail.data.banner)) return [];
-    return serviceDetail.data.banner.filter(img => img?.trim());
+    if (
+      !serviceDetail?.data?.banner ||
+      !Array.isArray(serviceDetail.data.banner)
+    )
+      return [];
+    return serviceDetail.data.banner.filter((img) => img?.trim());
   }, [serviceDetail]);
 
   // 处理服务内容
@@ -48,27 +52,50 @@ const ServiceDetail = () => {
     return serviceDetail?.data?.description || "暂无服务内容介绍";
   }, [serviceDetail]);
 
-  // 模拟用户评价数据
-  const reviews = useMemo(() => [
-    {
-      id: 1,
-      username: "张**",
-      avatar: "https://via.placeholder.com/40/d81e06/ffffff?text=张",
-      rating: 5,
-      content: "师傅很专业，服务态度好，维修效果满意！",
-      time: "2024-01-15",
-      images: ["https://via.placeholder.com/60", "https://via.placeholder.com/60"]
-    },
-    {
-      id: 2,
-      username: "李**",
-      avatar: "https://via.placeholder.com/40/d81e06/ffffff?text=李",
-      rating: 4,
-      content: "上门及时，价格合理，推荐！",
-      time: "2024-01-10",
-      images: []
+  // 处理服务规格数据，默认选择第一个
+  const serviceSpecs = useMemo(() => {
+    return serviceDetail?.data?.servicesSpecificationItems || [];
+  }, [serviceDetail]);
+
+  // 初始化选中的规格（选择第一个）
+  const initSelectedSpec = useMemo(() => {
+    if (serviceSpecs.length > 0 && selectedSpecId === null) {
+      const firstSpec = serviceSpecs[0];
+      if (firstSpec.id) {
+        setSelectedSpecId(firstSpec.id);
+        return firstSpec.id;
+      }
     }
-  ], []);
+    return selectedSpecId;
+  }, [serviceSpecs, selectedSpecId]);
+
+  // 模拟用户评价数据
+  const reviews = useMemo(
+    () => [
+      {
+        id: 1,
+        username: "张**",
+        avatar: "https://via.placeholder.com/40/d81e06/ffffff?text=张",
+        rating: 5,
+        content: "师傅很专业，服务态度好，维修效果满意！",
+        time: "2024-01-15",
+        images: [
+          "https://via.placeholder.com/60",
+          "https://via.placeholder.com/60",
+        ],
+      },
+      {
+        id: 2,
+        username: "李**",
+        avatar: "https://via.placeholder.com/40/d81e06/ffffff?text=李",
+        rating: 4,
+        content: "上门及时，价格合理，推荐！",
+        time: "2024-01-10",
+        images: [],
+      },
+    ],
+    []
+  );
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -78,6 +105,10 @@ const ServiceDetail = () => {
     });
   };
 
+  const handleSpecSelect = (specId: number) => {
+    setSelectedSpecId(specId);
+  };
+
   const handleContact = () => {
     setShowContact(true);
   };
@@ -85,13 +116,13 @@ const ServiceDetail = () => {
   const handleBooking = () => {
     // 跳转到订单确认页面，传递服务ID
     Taro.navigateTo({
-      url: `/pages/order-confirm/index?serviceId=${serviceId}`
+      url: `/pages/order-confirm/index?serviceId=${serviceId}`,
     });
   };
 
   const handleCall = () => {
     Taro.makePhoneCall({
-      phoneNumber: "400-123-4567"
+      phoneNumber: "400-123-4567",
     });
     setShowContact(false);
   };
@@ -163,23 +194,35 @@ const ServiceDetail = () => {
         <View className="service-header">
           <View className="service-title">{service.name}</View>
           <View className="service-price">
-            <View className="price-label">起步价</View>
             <View className="price-value">
               ¥<Text className="price-number">{service.price}</Text>
             </View>
           </View>
         </View>
 
-        <View className="service-tags">
-          <Tag type="primary">专业维修</Tag>
-          <Tag type="success">上门服务</Tag>
-          <Tag>质量保证</Tag>
-        </View>
-
-        <View className="service-desc">
-          {service.description || "专业维修服务，质量保证，价格透明"}
-        </View>
+        <View className="service-desc">价格面议，友好协商</View>
       </View>
+
+      {/* 服务规格选择 */}
+      {serviceSpecs.length > 0 && (
+        <View className="service-specs">
+          <View className="specs-title">服务规格</View>
+          <View className="specs-options">
+            {serviceSpecs.map((spec) => (
+              <View key={spec.id} className="spec-item-wrap">
+                <View
+                  className={`spec-item ${
+                    selectedSpecId === spec.id ? "selected" : ""
+                  }`}
+                  onClick={() => spec.id && handleSpecSelect(spec.id)}
+                >
+                  <Text className="spec-name">{spec.name}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
 
       {/* Tab切换内容 */}
       <View className="tabs-section">
@@ -190,36 +233,7 @@ const ServiceDetail = () => {
         >
           <TabPane title="服务内容">
             <View className="tab-content">
-              <View className="content-section">
-                <View className="content-title">服务详情</View>
-                <View className="content-text">{serviceContent}</View>
-              </View>
-
-              <View className="content-section">
-                <View className="content-title">服务流程</View>
-                <View className="process-list">
-                  <View className="process-item">
-                    <View className="process-number">1</View>
-                    <View className="process-text">在线下单预约</View>
-                  </View>
-                  <View className="process-item">
-                    <View className="process-number">2</View>
-                    <View className="process-text">师傅上门检测</View>
-                  </View>
-                  <View className="process-item">
-                    <View className="process-number">3</View>
-                    <View className="process-text">确认方案报价</View>
-                  </View>
-                  <View className="process-item">
-                    <View className="process-number">4</View>
-                    <View className="process-text">开始维修服务</View>
-                  </View>
-                  <View className="process-item">
-                    <View className="process-number">5</View>
-                    <View className="process-text">验收完成付款</View>
-                  </View>
-                </View>
-              </View>
+              {service.description ?? "暂无数据"}
             </View>
           </TabPane>
 
@@ -241,11 +255,7 @@ const ServiceDetail = () => {
                             <View className="review-time">{review.time}</View>
                           </View>
                         </View>
-                        <Rate
-                          value={review.rating}
-                          readOnly
-                          size="small"
-                        />
+                        <Rate value={review.rating} readOnly size="small" />
                       </View>
 
                       <View className="review-content">{review.content}</View>
@@ -276,10 +286,7 @@ const ServiceDetail = () => {
       {/* 底部操作栏 */}
       <View className="bottom-bar">
         <View className="action-buttons">
-          <Button
-            className="action-btn favorite-btn"
-            onClick={handleFavorite}
-          >
+          <Button className="action-btn favorite-btn" onClick={handleFavorite}>
             {isFavorite ? (
               <HeartFill size={20} color="#d81e06" />
             ) : (
@@ -288,10 +295,7 @@ const ServiceDetail = () => {
             <View className="btn-text">收藏</View>
           </Button>
 
-          <Button
-            className="action-btn contact-btn"
-            onClick={handleContact}
-          >
+          <Button className="action-btn contact-btn" onClick={handleContact}>
             <Service size={20} color="#999" />
             <View className="btn-text">客服</View>
           </Button>

@@ -120,6 +120,59 @@
     }
   }
 
+  /* 服务规格选择区域 */
+  .service-specs {
+    background: #fff;
+    padding: 20px 16px;
+    margin-bottom: 10px;
+
+    .specs-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    .specs-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      .spec-item-wrap {
+        width: calc(50% - 6px);
+      }
+      .spec-item {
+        padding: 12px;
+        border: 1px solid #e5e5e5;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+
+        &:active {
+          transform: scale(0.98);
+        }
+
+        &.selected {
+          border-color: #d81e06;
+          background: rgba(216, 30, 6, 0.05);
+
+          .spec-name {
+            color: #d81e06;
+            font-weight: 500;
+          }
+        }
+
+        .spec-name {
+          font-size: 14px;
+          color: #333;
+          line-height: 1.4;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
   /* Tab切换区域 */
   .tabs-section {
     background: #fff;
@@ -170,7 +223,7 @@
           padding-left: 12px;
 
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             left: 0;
             top: 50%;
@@ -200,7 +253,7 @@
             position: relative;
 
             &:not(:last-child)::after {
-              content: '';
+              content: "";
               position: absolute;
               left: 18px;
               bottom: -8px;
@@ -387,7 +440,7 @@
         position: relative;
 
         &::after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: -10px;
           left: 50%;
@@ -429,5 +482,3 @@
     }
   }
 }
-
-

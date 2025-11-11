@@ -1,6 +1,7 @@
 import { View, Text } from "@tarojs/components";
 import {
   Button,
+  Empty,
   Tag,
   Loading,
 } from "@nutui/nutui-react-taro";
@@ -22,7 +23,6 @@ import {
   usePostAddressSetDefault,
 } from "../../api/address-api/address-api";
 import type { Address } from "../../api/model/address";
-import Empty from "../../components/Empty";
 import "./index.scss";
 
 const AddressList = () => {
