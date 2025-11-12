@@ -5,13 +5,13 @@ import {
   TextArea,
   Popup,
   Tag,
-  Cell,
-  Loading,
 } from "@nutui/nutui-react-taro";
 import { ArrowRight, Plus, User, Del } from "@nutui/icons-react-taro";
 import { useState, useMemo, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import { useGetServicesDetails } from "../../api/services-api/services-api";
+import { usePostAddressList } from "../../api/address-api/address-api";
+import type { Address } from "../../api/model/address";
 import "./index.scss";
 import CustomLoading from "../../components/Loading";
 
@@ -20,50 +20,67 @@ const OrderConfirm = () => {
   const [remark, setRemark] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [showContactPicker, setShowContactPicker] = useState(false);
-  const [selectedContact, setSelectedContact] = useState<any>(null);
+  const [selectedContact, setSelectedContact] = useState<Address | null>(null);
 
-  // 从路由参数获取服务ID
+  // 从路由参数获取服务ID和规格ID
   const params = Taro.getCurrentInstance().router?.params;
   console.log("路由参数:", params);
   const serviceId = parseInt(params?.serviceId || "0");
+  const specId = params?.specId ? parseInt(params.specId) : null;
 
   // 获取服务详情数据
   const {
     data: serviceDetail,
-    isLoading,
-    error,
+    isLoading: isServiceLoading,
+    error: serviceError,
   } = useGetServicesDetails({
     id: serviceId,
   });
 
-  // 模拟联系人数据
-  const contacts = useMemo(
-    () => [
-      {
-        id: 1,
-        name: "张三",
-        phone: "138****8888",
-        address: "北京市朝阳区xxx小区xx号楼xx室",
-        isDefault: true,
-      },
-      {
-        id: 2,
-        name: "李四",
-        phone: "139****9999",
-        address: "北京市海淀区xxx大厦xx层",
-        isDefault: false,
-      },
-    ],
-    []
-  );
+  // 获取地址列表数据
+  const {
+    trigger: loadAddressList,
+    data: addressListData,
+    isMutating: isAddressLoading,
+  } = usePostAddressList();
 
-  // 设置默认联系人
-  useEffect(() => {
-    const defaultContact = contacts.find((c) => c.isDefault);
-    if (defaultContact) {
-      setSelectedContact(defaultContact);
+  // 地址列表
+  const addresses = useMemo(() => {
+    return addressListData?.data || [];
+  }, [addressListData]);
+
+  // 选中的服务规格
+  const selectedSpec = useMemo(() => {
+    if (!specId || !serviceDetail?.data?.servicesSpecificationItems) {
+      return null;
     }
-  }, [contacts]);
+    return serviceDetail.data.servicesSpecificationItems.find(
+      (spec) => spec.id === specId
+    );
+  }, [specId, serviceDetail]);
+
+  // 获取地址列表
+  useEffect(() => {
+    loadAddressList();
+  }, [loadAddressList]);
+
+  // 页面显示时刷新地址列表
+  Taro.useDidShow(() => {
+    loadAddressList();
+  });
+
+  // 设置默认地址
+  useEffect(() => {
+    if (addresses.length > 0) {
+      const defaultAddress = addresses.find((addr) => addr.isDefault);
+      if (defaultAddress) {
+        setSelectedContact(defaultAddress);
+      } else {
+        // 如果没有默认地址，选择第一个
+        setSelectedContact(addresses[0]);
+      }
+    }
+  }, [addresses]);
 
   // 计算总价
   const totalPrice = useMemo(() => {
@@ -72,16 +89,15 @@ const OrderConfirm = () => {
   }, [serviceDetail, quantity]);
 
   // 选择联系人
-  const handleContactSelect = (contact: any) => {
+  const handleContactSelect = (contact: Address) => {
     setSelectedContact(contact);
     setShowContactPicker(false);
   };
 
   // 添加地址
   const handleAddAddress = () => {
-    Taro.showToast({
-      title: "跳转到添加地址页面",
-      icon: "none",
+    Taro.navigateTo({
+      url: "/pages/address-add/index",
     });
     setShowContactPicker(false);
   };
@@ -116,6 +132,7 @@ const OrderConfirm = () => {
 
     const orderData = {
       serviceId,
+      specId,
       contactId: selectedContact.id,
       quantity,
       remark,
@@ -137,10 +154,10 @@ const OrderConfirm = () => {
     }, 1500);
   };
 
-  if (isLoading || !serviceDetail?.data) {
+  if (isServiceLoading || !serviceDetail?.data) {
     return (
       <View className="order-confirm-page">
-        <CustomLoading />
+        <CustomLoading text="加载服务信息..." />
       </View>
     );
   }
@@ -161,12 +178,12 @@ const OrderConfirm = () => {
               <View className="contact-left">
                 <View className="contact-name">
                   <User size={14} color="#333" />
-                  <Text className="name">{selectedContact.name}</Text>
+                  <Text className="name">{selectedContact.contact}</Text>
                   {selectedContact.isDefault && <Tag type="primary">默认</Tag>}
                 </View>
                 <View className="contact-phone">{selectedContact.phone}</View>
                 <View className="contact-address">
-                  {selectedContact.address}
+                  {selectedContact.street} {selectedContact.unit}
                 </View>
               </View>
             ) : (
@@ -197,6 +214,12 @@ const OrderConfirm = () => {
             </View>
             <View className="service-details">
               <View className="service-title">{service.name}</View>
+              {selectedSpec && (
+                <View className="service-spec">
+                  <Text className="spec-label">规格：</Text>
+                  <Text className="spec-value">{selectedSpec.name}</Text>
+                </View>
+              )}
               {service.description && (
                 <View className="service-desc">{service.description}</View>
               )}
@@ -294,22 +317,34 @@ const OrderConfirm = () => {
           </View>
 
           <View className="contact-list">
-            {contacts.map((contact) => (
-              <View
-                key={contact.id}
-                className="contact-item"
-                onClick={() => handleContactSelect(contact)}
-              >
-                <View className="contact-main">
-                  <View className="contact-name-row">
-                    <Text className="contact-name">{contact.name}</Text>
-                    {contact.isDefault && <Tag type="primary">默认</Tag>}
-                  </View>
-                  <Text className="contact-phone">{contact.phone}</Text>
-                </View>
-                <View className="contact-address">{contact.address}</View>
+            {isAddressLoading ? (
+              <View className="loading-container">
+                <CustomLoading text="加载地址中..." size="small" />
               </View>
-            ))}
+            ) : addresses.length > 0 ? (
+              addresses.map((address) => (
+                <View
+                  key={address.id}
+                  className="contact-item"
+                  onClick={() => handleContactSelect(address)}
+                >
+                  <View className="contact-main">
+                    <View className="contact-name-row">
+                      <Text className="contact-name">{address.contact}</Text>
+                      {address.isDefault && <Tag type="primary">默认</Tag>}
+                    </View>
+                    <Text className="contact-phone">{address.phone}</Text>
+                  </View>
+                  <View className="contact-address">
+                    {address.street} {address.unit}
+                  </View>
+                </View>
+              ))
+            ) : (
+              <View className="empty-address">
+                <Text className="empty-text">暂无地址信息</Text>
+              </View>
+            )}
           </View>
 
           <Button className="add-contact-btn" onClick={handleAddAddress}>

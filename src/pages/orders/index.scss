@@ -9,60 +9,12 @@
     padding: 10px 15px;
     background-color: #fff;
     border-bottom: 1px solid #e5e5e5;
-
-    :global(.nut-searchbar) {
-      padding: 0;
-      background-color: transparent;
-
-      :global(.nut-searchbar__content) {
-        background-color: #f5f5f5;
-        border-radius: 20px;
-        padding: 0 12px;
-        height: 36px;
-
-        :global(input) {
-          font-size: 14px;
-          color: #333;
-
-          &::placeholder {
-            color: #999;
-          }
-        }
-      }
-    }
   }
 
   /* 标签页 */
   .orders-tabs {
     background-color: #fff;
     border-bottom: 1px solid #e5e5e5;
-
-    :global(.nut-tabs) {
-      :global(.nut-tabs-titles) {
-        padding: 0;
-
-        :global(.nut-tabs-titles-item) {
-          flex: 1;
-          text-align: center;
-          font-size: 14px;
-          color: #666;
-          border-bottom: 2px solid transparent;
-
-          &:global(.active) {
-            color: #d81e06;
-            border-bottom-color: #d81e06;
-          }
-        }
-      }
-
-      :global(.nut-tabs-pane) {
-        display: none;
-
-        &:global(.active) {
-          display: block;
-        }
-      }
-    }
   }
 
   /* 订单列表 */
@@ -80,119 +32,87 @@
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
 
-        /* 卡片头部 */
-        .order-header {
+        /* 顶部：订单号 + 状态标签 */
+        .order-top {
           display: flex;
           justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 15px;
-          padding-bottom: 15px;
+          align-items: center;
+          padding-bottom: 12px;
           border-bottom: 1px solid #f0f0f0;
 
-          .order-title-section {
-            flex: 1;
+          .order-no {
+            font-size: 14px;
+            color: #333;
+          }
+        }
+
+        /* 中间：订单服务信息 */
+        .order-service {
+          .service-info {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
 
-            .order-title {
-              font-size: 16px;
-              font-weight: 600;
+            .service-title {
+              font-size: 14px;
               color: #333;
-              line-height: 1.4;
+              font-weight: 500;
             }
 
-            .order-meta {
-              display: flex;
-              gap: 8px;
-
-              :global(.nut-tag) {
-                font-size: 12px;
-                padding: 4px 10px;
-              }
-            }
-          }
-
-          .order-amount {
-            font-size: 18px;
-            font-weight: 600;
-            color: #d81e06;
-            margin-left: 15px;
-            white-space: nowrap;
-          }
-        }
-
-        /* 订单信息行 */
-        .order-id-section,
-        .order-time-section,
-        .order-description-section {
-          margin-bottom: 12px;
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-
-          .label {
-            width: 70px;
-            font-size: 13px;
-            color: #999;
-            font-weight: 600;
-            flex-shrink: 0;
-          }
-
-          .value {
-            flex: 1;
-            font-size: 13px;
-            color: #333;
-            line-height: 1.4;
-            word-break: break-word;
-
-            &.description {
+            .service-spec,
+            .service-quantity,
+            .service-address {
+              font-size: 13px;
               color: #666;
-              line-height: 1.5;
-              padding: 8px;
-              background-color: #f9f9f9;
-              border-radius: 4px;
-              margin-top: 4px;
             }
           }
         }
 
-        .order-description-section {
-          margin-bottom: 15px;
-        }
-
-        /* 操作按钮 */
-        .order-actions {
+        /* 底部：金额时间 + 操作按钮 */
+        .order-bottom {
           display: flex;
-          gap: 10px;
+          justify-content: space-between;
+          align-items: flex-end;
           padding-top: 12px;
           border-top: 1px solid #f0f0f0;
 
-          :global(.nut-button) {
+          .order-info {
             flex: 1;
-            font-size: 12px;
-            height: 32px;
-            line-height: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
 
-            &:global(.nut-button--primary) {
-              background-color: #d81e06;
-              border-color: #d81e06;
-              color: #fff;
+            .amount-info {
+              display: flex;
+              align-items: center;
+              gap: 2px;
 
-              &:active {
-                opacity: 0.9;
+              .amount-label {
+                font-size: 12px;
+                color: #999;
+              }
+
+              .amount-value {
+                font-size: 16px;
+                font-weight: 600;
+                color: #d81e06;
               }
             }
 
-            &:global(.nut-button--default) {
-              color: #d81e06;
-              border-color: #d81e06;
-
-              &:active {
-                opacity: 0.9;
-              }
+            .time-info {
+              font-size: 12px;
+              color: #999;
             }
+          }
+
+          .order-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
           }
         }
       }
