@@ -61,48 +61,6 @@
           background: rgba(255, 255, 255, 0.9) !important;
           border-radius: 17px !important;
           padding: 0 !important;
-
-          :global(.nut-searchbar) {
-            height: 34px !important;
-            background: transparent !important;
-            border-radius: 17px !important;
-            border: none !important;
-            padding: 0 12px !important;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-
-            :global(.nut-searchbar__content) {
-              height: 34px !important;
-              background: transparent !important;
-              border-radius: 17px !important;
-              flex: 1;
-              display: flex;
-              align-items: center;
-            }
-
-            :global(.nut-searchbar__input) {
-              height: 34px !important;
-              font-size: 13px !important;
-              color: #333333 !important;
-              background: transparent !important;
-              line-height: 34px !important;
-
-              &::placeholder {
-                color: #cccccc !important;
-                font-size: 13px !important;
-              }
-            }
-
-            :global(.nut-searchbar__search-icon) {
-              color: #999999 !important;
-              font-size: 14px !important;
-            }
-
-            :global(.nut-searchbar__clear-btn) {
-              color: #999999 !important;
-            }
-          }
         }
 
         .city-selector {

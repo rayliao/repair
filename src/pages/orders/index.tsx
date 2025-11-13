@@ -1,20 +1,59 @@
 import { View } from "@tarojs/components";
-import { Tabs, TabPane, Tag, Button, Empty } from "@nutui/nutui-react-taro";
+import {
+  Tabs,
+  TabPane,
+  Tag,
+  Button,
+  Empty,
+  Picker,
+} from "@nutui/nutui-react-taro";
 import { useState, useMemo, useEffect } from "react";
-import { usePostOrderList } from "../../api/order-api/order-api";
+import {
+  usePostOrderList,
+  useGetOrderCancelReasons,
+  usePostOrderCancel,
+} from "../../api/order-api/order-api";
 import CustomLoading from "../../components/Loading";
+import Taro from "@tarojs/taro";
 import "./index.scss";
 
 const Orders = () => {
   const [activeTab, setActiveTab] = useState("0");
   const [searchText, setSearchText] = useState("");
+  const [pickerVisible, setPickerVisible] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+  const [cancelReasons, setCancelReasons] = useState<string[]>([]);
+  const [selectedReasonIndex, setSelectedReasonIndex] = useState(0);
 
-  // 获取订单列表数据
+  // 页面初始化时加载订单列表
   const {
     trigger: loadOrderList,
     data: orderListData,
     isMutating: isLoading,
   } = usePostOrderList();
+
+  // 获取取消理由列表
+  const { data: cancelReasonsData, error: cancelReasonsError } =
+    useGetOrderCancelReasons();
+
+  // 初始化取消理由列表
+  useEffect(() => {
+    if (cancelReasonsData?.data) {
+      setCancelReasons(cancelReasonsData.data);
+    }
+  }, [cancelReasonsData]);
+
+  // 格式化取消理由为 Picker 选项
+  const pickerOptions = useMemo(() => {
+    return [cancelReasons.map((reason) => ({
+      label: reason,
+      value: reason
+    }))];
+  }, [cancelReasons]);
+
+  // 取消订单
+  const { trigger: cancelOrder, isMutating: isCanceling } =
+    usePostOrderCancel();
 
   // 订单状态映射
   const getOrderStatusText = (orderState?: number, payState?: number) => {
@@ -94,6 +133,71 @@ const Orders = () => {
 
     return filtered;
   }, [allOrders, activeTab, searchText]);
+
+  // 处理取消订单点击
+  const handleCancelOrder = (orderId?: number) => {
+    if (!orderId) return;
+    setSelectedOrderId(orderId);
+    setPickerVisible(true);
+  };
+
+  // Picker 确认回调
+  const handlePickerConfirm = (options: any, values: any) => {
+    setPickerVisible(false);
+    const selectedReason = values[0];
+
+    // 显示确认对话框
+    Taro.showModal({
+      title: '确认取消订单',
+      content: `取消理由：${selectedReason}`,
+      success: async (res) => {
+        if (res.confirm) {
+          await confirmCancelOrder(selectedReason);
+        }
+      }
+    });
+  };
+
+  // 确认取消订单
+  const confirmCancelOrder = async (reason: string) => {
+    if (!selectedOrderId || !reason) {
+      Taro.showToast({
+        title: "请选择取消理由",
+        icon: "none",
+      });
+      return;
+    }
+
+    try {
+      const result = await cancelOrder({
+        orderId: selectedOrderId,
+        reason: reason,
+      });
+
+      if (result?.code === 0) {
+        Taro.showToast({
+          title: "订单取消成功",
+          icon: "success",
+        });
+        // 重新加载订单列表
+        loadOrderList();
+        // 重置状态
+        setSelectedOrderId(null);
+        setSelectedReasonIndex(0);
+      } else {
+        Taro.showToast({
+          title: result?.message || "取消失败",
+          icon: "none",
+        });
+      }
+    } catch (error) {
+      console.error("取消订单失败:", error);
+      Taro.showToast({
+        title: "网络错误，请重试",
+        icon: "none",
+      });
+    }
+  };
 
   const handleOrderDetail = (orderId?: number) => {
     if (!orderId) return;
@@ -195,7 +299,7 @@ const Orders = () => {
                           <Button
                             type="default"
                             size="small"
-                            onClick={() => console.log("取消订单:", order.id)}
+                            onClick={() => handleCancelOrder(order.id)}
                           >
                             取消订单
                           </Button>
@@ -229,6 +333,18 @@ const Orders = () => {
           </View>
         )}
       </View>
+
+      {/* 取消订单选择器 */}
+      <Picker
+        title="选择取消理由"
+        visible={pickerVisible}
+        options={pickerOptions}
+        onConfirm={handlePickerConfirm}
+        onCancel={() => {
+          setPickerVisible(false);
+          setSelectedOrderId(null);
+        }}
+      />
     </View>
   );
 };

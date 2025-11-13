@@ -15,29 +15,6 @@
     gap: 8px;
   }
 
-  .loading-icon {
-    &.small {
-      :global(.nut-loading) {
-        width: 16px;
-        height: 16px;
-      }
-    }
-
-    &.base {
-      :global(.nut-loading) {
-        width: 20px;
-        height: 20px;
-      }
-    }
-
-    &.large {
-      :global(.nut-loading) {
-        width: 24px;
-        height: 24px;
-      }
-    }
-  }
-
   .loading-text {
     color: #666;
     line-height: 1.4;

@@ -88,28 +88,3 @@ import CustomLoading from "../../components/Loading";
   text="自定义加载..." 
 />
 ```
-
-## 样式定制
-
-组件使用 CSS Module，可以通过以下方式自定义样式：
-
-```scss
-// 自定义加载文字颜色
-:global(.my-loading) {
-  .loading-text {
-    color: #d81e06;
-    font-weight: bold;
-  }
-}
-
-// 自定义遮罩背景
-:global(.custom-overlay) {
-  .loading-backdrop {
-    background: rgba(0, 0, 0, 0.5);
-  }
-  
-  .custom-loading {
-    background: rgba(255, 255, 255, 0.95);
-  }
-}
-```
