@@ -12,8 +12,8 @@ import {
   Phone,
   ArrowRight,
 } from "@nutui/icons-react-taro";
-import { useState } from "react";
 import Taro from "@tarojs/taro";
+import { useUserStore } from "../../store/userStore";
 import "./index.scss";
 
 interface MenuItem {
@@ -24,7 +24,7 @@ interface MenuItem {
 }
 
 const Profile = () => {
-  const [isLogin] = useState(true); // TODO: 从状态管理或 API 获取登录状态
+  const { isLogin, userInfo, logout } = useUserStore();
 
   // 菜单项配置
   const menuItems: MenuItem[] = [
@@ -93,7 +93,25 @@ const Profile = () => {
 
   const handleLogin = () => {
     console.log("跳转到登录");
-    // TODO: 跳转到登录页面
+    Taro.navigateTo({
+      url: "/pages/login/index",
+    });
+  };
+
+  const handleLogout = () => {
+    Taro.showModal({
+      title: "提示",
+      content: "确定要退出登录吗？",
+      success: (res) => {
+        if (res.confirm) {
+          logout();
+          Taro.showToast({
+            title: "已退出登录",
+            icon: "success",
+          });
+        }
+      },
+    });
   };
 
   return (
@@ -104,13 +122,13 @@ const Profile = () => {
           <View className="user-info">
             <View className="user-left">
               <Image
-                src="https://via.placeholder.com/60/d81e06/ffffff?text=用户"
+                src={userInfo?.avatar || "https://via.placeholder.com/60/d81e06/ffffff?text=用户"}
                 className="user-avatar"
                 mode="scaleToFill"
               />
               <View className="user-details">
-                <View className="user-name">用户昵称</View>
-                <View className="user-phone">18888888888</View>
+                <View className="user-name">{userInfo?.nickname || "用户昵称"}</View>
+                <View className="user-phone">{userInfo?.phone || "未绑定手机号"}</View>
               </View>
             </View>
             <View className="user-right">
@@ -168,7 +186,7 @@ const Profile = () => {
             block
             size="large"
             type="danger"
-            onClick={() => console.log("退出登录")}
+            onClick={handleLogout}
           >
             退出登录
           </Button>

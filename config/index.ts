@@ -10,12 +10,6 @@ export default defineConfig<"vite">(async (merge) => {
     projectName: "repair",
     date: "2025-9-18",
     designWidth: 375,
-    deviceRatio: {
-      640: 2.34 / 2,
-      750: 1,
-      375: 2,
-      828: 1.81 / 2,
-    },
     sourceRoot: "src",
     outputRoot: "dist",
     // 开启 HTML 插件

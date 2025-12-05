@@ -10,6 +10,7 @@ export default defineAppConfig({
     "pages/location-picker/index",
     "pages/orders/index",
     "pages/profile/index",
+    "pages/login/index",
   ],
   window: {
     navigationBarBackgroundColor: "#d81e06",

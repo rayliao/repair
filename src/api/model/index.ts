@@ -5,6 +5,8 @@
  * OpenAPI spec version: v1
  */
 
+export * from './accessTokenGZH';
+export * from './accessTokenGZHApiResults';
 export * from './addAddressDto';
 export * from './address';
 export * from './addressApiResults';
@@ -12,11 +14,20 @@ export * from './addressIdDto';
 export * from './addressListApiResults';
 export * from './apiResult';
 export * from './cancelOrderParamter';
+export * from './code2SessionData';
+export * from './code2SessionDataApiResults';
 export * from './cosTokenResult';
 export * from './cosTokenResultApiResults';
 export * from './editAddressDto';
 export * from './getAddressInfoParams';
+export * from './getGzhAccessTokenParams';
+export * from './getGzhGetSignatureParams';
+export * from './getGzhUserinfoParams';
+export * from './getPhoneParamGzh';
 export * from './getServicesDetailsParams';
+export * from './getUserInfoParams';
+export * from './getUserOpenIdJsCodeParams';
+export * from './loginModel';
 export * from './order';
 export * from './orderListApiResults';
 export * from './orderOrderState';
@@ -25,7 +36,13 @@ export * from './postOrderParamter';
 export * from './servicesDetail';
 export * from './servicesDetailApiResults';
 export * from './servicesSpecificationItem';
+export * from './stringApiResults';
 export * from './stringListApiResults';
+export * from './user';
+export * from './userApiResults';
+export * from './userInfoGZH';
+export * from './userInfoGZHApiResults';
+export * from './userUserType';
 export * from './webInfo';
 export * from './webServiceItemDto';
 export * from './webServiceTypeDto';
