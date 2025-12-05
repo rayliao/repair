@@ -15,9 +15,13 @@ import {
 } from "../../api/order-api/order-api";
 import CustomLoading from "../../components/Loading";
 import Taro from "@tarojs/taro";
+import { useAuth } from "../../utils/useAuth";
 import "./index.scss";
 
 const Orders = () => {
+  // 登录鉴权
+  const { isLogin } = useAuth();
+
   const [activeTab, setActiveTab] = useState("0");
   const [searchText, setSearchText] = useState("");
   const [pickerVisible, setPickerVisible] = useState(false);
@@ -212,6 +216,11 @@ const Orders = () => {
         <CustomLoading text="加载订单列表..." />
       </View>
     );
+  }
+
+  // 如果未登录，不渲染页面内容
+  if (!isLogin) {
+    return null;
   }
 
   return (

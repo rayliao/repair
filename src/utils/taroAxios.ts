@@ -4,6 +4,7 @@
  */
 import Taro from '@tarojs/taro'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { useUserStore } from '../store/userStore'
 
 interface TaroRequestConfig extends AxiosRequestConfig {
   timeout?: number
@@ -41,11 +42,18 @@ function convertAxiosToTaroConfig(axiosConfig: TaroRequestConfig) {
     finalUrl = `${finalUrl}${finalUrl.includes('?') ? '&' : '?'}${queryString}`
   }
 
+  // 从 store 获取 token (openId) 并添加到请求头
+  const token = useUserStore.getState().token
+  const finalHeaders = {
+    ...headers,
+    ...(token ? { openid: token } : {})
+  }
+
   return {
     url: finalUrl,
     method: method?.toUpperCase() as any,
     data: data || undefined,
-    header: headers || {},
+    header: finalHeaders,
     timeout,
     enableCache: false,
     dataType: 'json' as const,

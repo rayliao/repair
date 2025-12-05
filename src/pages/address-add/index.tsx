@@ -15,9 +15,13 @@ import {
   useGetAddressInfo,
 } from "../../api/address-api/address-api";
 import type { AddAddressDto, EditAddressDto } from "../../api/model";
+import { useAuth } from "../../utils/useAuth";
 import "./index.scss";
 
 const AddressAdd = () => {
+  // 登录鉴权
+  const { isLogin } = useAuth();
+
   const [isEdit, setIsEdit] = useState(false);
   const [addressId, setAddressId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -131,6 +135,12 @@ const AddressAdd = () => {
       setLoading(false);
     }
   };
+
+  // 如果未登录，不渲染页面内容
+  if (!isLogin) {
+    return null;
+  }
+
   return (
     <View className="address-add-page">
       <View className="form-container">

@@ -1,5 +1,6 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import Taro from "@tarojs/taro";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 interface UserInfo {
   id?: number;
@@ -41,17 +42,17 @@ export const useUserStore = create<UserState>()(
         }),
     }),
     {
-      name: 'user-storage',
+      name: "user-storage",
       storage: createJSONStorage(() => ({
         getItem: (name) => {
-          const value = wx.getStorageSync(name);
+          const value = Taro.getStorageSync(name);
           return value || null;
         },
         setItem: (name, value) => {
-          wx.setStorageSync(name, value);
+          Taro.setStorageSync(name, value);
         },
         removeItem: (name) => {
-          wx.removeStorageSync(name);
+          Taro.removeStorageSync(name);
         },
       })),
     }

@@ -14,8 +14,12 @@ import { usePostAddressList } from "../../api/address-api/address-api";
 import type { Address } from "../../api/model/address";
 import "./index.scss";
 import CustomLoading from "../../components/Loading";
+import { useAuth } from "../../utils/useAuth";
 
 const OrderConfirm = () => {
+  // 登录鉴权
+  const { isLogin } = useAuth();
+
   const [quantity, setQuantity] = useState(1);
   const [remark, setRemark] = useState("");
   const [images, setImages] = useState<string[]>([]);
@@ -153,6 +157,11 @@ const OrderConfirm = () => {
       Taro.navigateBack();
     }, 1500);
   };
+
+  // 如果未登录，不渲染页面内容
+  if (!isLogin) {
+    return null;
+  }
 
   if (isServiceLoading || !serviceDetail?.data) {
     return (

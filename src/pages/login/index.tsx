@@ -46,6 +46,7 @@ const Login = () => {
 
       // 第一步：获取微信登录 code 换取 openID 和 session_key
       const wxLoginRes = await Taro.login();
+      console.log("微信登录结果:", wxLoginRes);
       if (!wxLoginRes.code) {
         throw new Error("获取微信登录code失败");
       }

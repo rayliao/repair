@@ -23,9 +23,13 @@ import {
   usePostAddressSetDefault,
 } from "../../api/address-api/address-api";
 import type { Address } from "../../api/model/address";
+import { useAuth } from "../../utils/useAuth";
 import "./index.scss";
 
 const AddressList = () => {
+  // 登录鉴权
+  const { isLogin } = useAuth();
+
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -131,6 +135,11 @@ const AddressList = () => {
         </View>
       </View>
     );
+  }
+
+  // 如果未登录，不渲染页面内容
+  if (!isLogin) {
+    return null;
   }
 
   return (
