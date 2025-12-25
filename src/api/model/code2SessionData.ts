@@ -21,4 +21,6 @@ export interface Code2SessionData {
    * @nullable
    */
   unionid?: string | null;
+  /** @nullable */
+  body?: string | null;
 }

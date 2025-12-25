@@ -1,7 +1,7 @@
 module.exports = {
   api: {
     input: {
-      target: 'http://api.zxjl.com/swagger/v1/swagger.json',
+      target: 'https://api.zxjl.com/swagger/v1/swagger.json',
       validation: false
     },
     output: {

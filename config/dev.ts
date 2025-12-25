@@ -1,7 +1,7 @@
 import type { UserConfigExport } from "@tarojs/cli";
 
 const isH5 = process.env.CLIENT_ENV === "h5";
-const HOST = '"http://api.zxjl.com"';
+const HOST = '"https://api.zxjl.com"';
 
 export default {
   env: {
