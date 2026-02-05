@@ -12,7 +12,7 @@ import { useState, useMemo, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import { useGetApiServicesList } from "../../api/web-api/web-api";
 import "./index.module.scss";
-import { host } from "src/utils/config";
+import { host } from "../../utils/config";
 
 interface ServiceListComponentProps {
   /** 初始选中的分类名称（可选） */
